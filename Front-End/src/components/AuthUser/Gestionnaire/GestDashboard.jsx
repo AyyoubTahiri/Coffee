@@ -3,7 +3,7 @@ import React from 'react';
 const GestDashboard = () => {
     return (
         <div>
-            bonjour gestionaire
+            <sidebarre/>
             
         </div>
     );
