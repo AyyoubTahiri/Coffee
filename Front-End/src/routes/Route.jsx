@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestLayouts from "../components/Layouts/GuestLayouts";
-import LoginForm from "../Forms/LoginForm";
+// import LoginForm from "../Forms/LoginForm";
 import Home from "../components/Home";
 import Services from "../components/Services/Services";
 import Banner from "../components/Banner/Banner";
@@ -10,6 +10,8 @@ import LoginLayouts from "../components/Layouts/loginLayouts";
 import GestionnaireLayouts from "../components/Layouts/gestionnaireLayouts";
 import GestDashboard from "../components/AuthUser/Gestionnaire/GestDashboard";
 import GestionStock from "../components/AuthUser/Gestionnaire/GestionStock";
+import AjouterElement from "../components/AuthUser/Gestionnaire/crudForm/AjouterElement"
+import Login from "../Login/Login";
 
 export const router= createBrowserRouter([
     {
@@ -44,7 +46,7 @@ export const router= createBrowserRouter([
         children:[
             {
                 path:'/login',
-                element:<LoginForm/>,
+                element:<Login/>,
             },
         ]
     },{
@@ -57,6 +59,10 @@ export const router= createBrowserRouter([
             {
                 path:'/gest/stock',
                 element:<GestionStock/>,
+            },
+            {
+                path:'/gest/ajouter',
+                element:<AjouterElement/>,
             },
         ]
     }
