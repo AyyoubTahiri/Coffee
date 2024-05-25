@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idProduit');
+            $table->unsignedBigInteger('idIngredient');
             $table->string('quantite');
-            $table->date('date');
+            $table->date('dateEntre');
+            $table->date('dateExpires');
+            $table->string('prixTotale');
             $table->timestamps();
         });
     }

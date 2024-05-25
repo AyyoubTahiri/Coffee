@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jaims', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idClient');
+            $table->unsignedBigInteger('idUser');
             $table->unsignedBigInteger('idProduit');
             $table->date('date');
             $table->timestamps();

@@ -1,8 +1,9 @@
-// AjouterElement.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AjouterElement = () => {
     const [formData, setFormData] = useState({ element: '', quantite: '', date: '' });
+    const navigate = useNavigate(); // Hook to navigate programmatically
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -13,6 +14,10 @@ const AjouterElement = () => {
         e.preventDefault();
         console.log('Submitted Data:', formData);
         // Here you can handle the submission, like sending data to an API or state management
+    };
+
+    const handleCancel = () => {
+        navigate('/gest/stock'); // Navigate to the stock page
     };
 
     return (
@@ -63,20 +68,37 @@ const AjouterElement = () => {
                         required
                     />
                 </div>
-                <button
-                    type="submit"
-                    style={{
-                        width: '100%',
-                        padding: '10px 20px',
-                        backgroundColor: 'brown',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    Ajouter
-                </button>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <button
+                        type="submit"
+                        style={{
+                            width: '48%',
+                            padding: '10px 20px',
+                            backgroundColor: 'brown',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Ajouter
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        style={{
+                            width: '48%',
+                            padding: '10px 20px',
+                            backgroundColor: 'grey',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
         </div>
     );

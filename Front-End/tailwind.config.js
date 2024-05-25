@@ -10,6 +10,11 @@ export default {
         cursive2: ["Sriracha", "cursive"],
       },
       colors: {
+        brown: {
+          900: '#3E2723',
+          700: '#5D4037',
+          600: '#6D4C41',
+        },
         primary: "#854d3d",
         secondary: "#4a1e1b",
         brandDark: "#270c03",

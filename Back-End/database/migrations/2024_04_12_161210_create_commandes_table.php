@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idClient');
+            $table->unsignedBigInteger('idUser');
             $table->unsignedBigInteger('idProduit');
-            $table->string('state');
+            $table->unsignedBigInteger('idTypeCommand');
+            $table->unsignedBigInteger('idPaiment');
             $table->date('date');
-            $table->string('total');
-            $table->string('mode de poiment');
+            $table->string('Prixtotal');
             $table->timestamps();
         });
     }

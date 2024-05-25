@@ -100,7 +100,9 @@
 }
 
 .container-loggin.active .sign-in{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(100%);
+    
 }
 
 .sign-up{
@@ -111,6 +113,7 @@
 }
 
 .container-loggin.active .sign-up{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -144,6 +147,7 @@
 }
 
 #toggle-container{
+    background-image: url(../assets/backCafe.png);
     position: absolute;
     top: 0;
     left: 50%;
@@ -156,14 +160,16 @@
 }
 
 .container-loggin.active #toggle-container{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(-100%);
     border-radius: 0 150px 100px 0;
 }
 
 #toggle{
-    background-color: #4a1e1b;
+    background-image: url(../assets/backCafe.png);
+   
     height: 100%;
-    background: linear-gradient(to right, #70412f, #895e4d);
+    
     color: #fff;
     position: relative;
     left: -100%;
@@ -174,10 +180,12 @@
 }
 
 .container-loggin.active #toggle{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(50%);
 }
 
 .toggle-panel{
+    background-image: url(../assets/backCafe.png);
     position: absolute;
     width: 50%;
     height: 100%;
@@ -193,19 +201,23 @@
 }
 
 .toggle-left{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(-200%);
 }
 
 .container-loggin.active .toggle-left{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(0);
 }
 
 .toggle-right{
+    background-image: url(../assets/backCafe.png);
     right: 0;
     transform: translateX(0);
 }
 
 .container-loggin.active .toggle-right{
+    background-image: url(../assets/backCafe.png);
     transform: translateX(200%);
 }
 .Error{

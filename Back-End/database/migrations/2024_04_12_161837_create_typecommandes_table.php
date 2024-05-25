@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('typecommandes', function (Blueprint $table) {
             $table->id();
-            $table->string('TypeCommande');
+            $table->string('name');
+            $table->string('prix');
             $table->timestamps();
         });
     }

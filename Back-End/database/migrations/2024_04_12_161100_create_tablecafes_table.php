@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tablecafes', function (Blueprint $table) {
             $table->id();
-            $table->integer('Number');
             $table->timestamps();
         });
     }

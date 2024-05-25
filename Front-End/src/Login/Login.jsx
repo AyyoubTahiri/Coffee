@@ -139,7 +139,7 @@ const Login = () => {
             </div>
             <div className="form-container sign-in">
                 <form>
-                    <h1>Sign In</h1>
+                    <h1>Log In</h1>
                     <div className="social-icons">
                         <a href="#" className="icon"><FontAwesomeIcon icon={faGooglePlusG} /></a>
                         <a href="#" className="icon"><FontAwesomeIcon icon={faFacebookF} /></a>
@@ -151,7 +151,7 @@ const Login = () => {
                     <input type="password" value={password} placeholder="Password" name='password' onChange={(e)=>setPassword(e.target.value)} />
                     <a href="#">Forget Your Password?</a>
                     <input type="checkbox" name="saveMe" id="saveMe" style={{ display:'' }} onChange={(e)=>setSaveMe(e.target.checked)}/>Save Me 
-                    <button type='submit' onClick={HandleLogin}>Sign In</button>
+                    <button type='submit' onClick={HandleLogin}>Log In</button>
                     <button onClick={()=>navigate('/')}>Annuler</button>
                     { ErrMsg && <p className='Error'>{ErrMsg}</p>}
                 </form>
@@ -161,7 +161,7 @@ const Login = () => {
                     <div className="toggle-panel toggle-left">
                         <h1>Welcome Back!</h1>
                         <p>Enter your personal details to use all of site features</p>
-                        <button className="btn" onClick={handleLoginClick}>Sign In</button>
+                        <button className="btn" onClick={handleLoginClick}>Log In</button>
                     </div>
                     <div className="toggle-panel toggle-right">
                         <h1>Hello, Friend!</h1>

@@ -10,8 +10,12 @@ import LoginLayouts from "../components/Layouts/loginLayouts";
 import GestionnaireLayouts from "../components/Layouts/gestionnaireLayouts";
 import GestDashboard from "../components/AuthUser/Gestionnaire/GestDashboard";
 import GestionStock from "../components/AuthUser/Gestionnaire/GestionStock";
-import AjouterElement from "../components/AuthUser/Gestionnaire/crudForm/AjouterElement"
+
 import Login from "../Login/Login";
+import GestMenu from "../components/AuthUser/Gestionnaire/GestMenu";
+import AjouterElement from "../components/AuthUser/Gestionnaire/crudForm/ajouterElement";
+import Analytic from "../components/AuthUser/Gestionnaire/Analytic";
+import GestCompt from "../components/AuthUser/Gestionnaire/GestCompt";
 
 export const router= createBrowserRouter([
     {
@@ -31,14 +35,8 @@ export const router= createBrowserRouter([
                 path:'/about',
                 element:<About/>,
             },
-            {
-                path:'/contact',
-                element:<Contact/>,
-            },
-            {
-                path:'/contact',
-                element:<Contact/>,
-            },
+          
+            
             
         ]
     },{
@@ -64,6 +62,19 @@ export const router= createBrowserRouter([
                 path:'/gest/ajouter',
                 element:<AjouterElement/>,
             },
+            {
+                path:'/gest/Analytic',
+                element:<Analytic/>,
+            },
+             {
+                path:'/gest/menu',
+                element:<GestMenu/>,
+            },
+            {
+                path:'/gest/Compt',
+                element:<GestCompt/>,
+            },
+            
         ]
     }
 ])
