@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('Users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->foreign('idRole')->references('id')->on('Role')->onDelete('cascade')->onUpdate('cascade');
         });
 
@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('commandes', function (Blueprint $table) {
-            $table->foreign('idUser')->references('id')->on('Users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idTypeCommand')->references('id')->on('typecommandes')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idPaiment')->references('id')->on('typePaiment')->onDelete('cascade')->onUpdate('cascade');
@@ -32,7 +32,7 @@ return new class extends Migration
         });
 
         Schema::table('jaims', function (Blueprint $table) {
-            $table->foreign('idUser')->references('id')->on('Users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
         });
 
@@ -41,7 +41,7 @@ return new class extends Migration
         });
 
         Schema::table('commentaire', function (Blueprint $table) {
-            $table->foreign('idUser')->references('id')->on('Users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
         });
     }

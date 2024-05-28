@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StorageIcon from '@mui/icons-material/Storage';
 import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/system';
 
 const GestionStock = () => {
     const navigate = useNavigate(); // Hook to programmatically navigate
@@ -187,7 +188,11 @@ const GestionStock = () => {
       setDetails(newDetails);
     };
     return (
-        <>
+      <Box
+      
+      bgcolor="#f0f0f0"
+      p={2}
+    > <div>
            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
     <div style={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
       <StorageIcon style={{ fill: 'white', marginRight: '5px' }} />
@@ -198,7 +203,7 @@ const GestionStock = () => {
   variant="outlined"
   style={{ borderColor: '#795548', color: '#795548', transition: 'color 0.3s, background-color 0.3s' }}
   className="hover-effect"
-  onClick={() => navigate('/gest/ajouter')}
+  onClick={() => navigate('/gest/ajouterstock')}
   startIcon={<AddIcon />}
 >
   Ajouter
@@ -288,7 +293,7 @@ const GestionStock = () => {
     className: 'striped-table-body'
   }}
       />
-       </>
+       </div></Box>
     );
 }
 

@@ -13,9 +13,15 @@ import GestionStock from "../components/AuthUser/Gestionnaire/GestionStock";
 
 import Login from "../Login/Login";
 import GestMenu from "../components/AuthUser/Gestionnaire/GestMenu";
-import AjouterElement from "../components/AuthUser/Gestionnaire/crudForm/ajouterElement";
+import AjouterElement from "../components/AuthUser/Gestionnaire/crudForm/AjouterElement";
 import Analytic from "../components/AuthUser/Gestionnaire/Analytic";
 import GestCompt from "../components/AuthUser/Gestionnaire/GestCompt";
+import Ajoutermenu from "../components/AuthUser/Gestionnaire/crudForm/Ajoutermenu";
+import Gererpersonnel from "../components/AuthUser/Gestionnaire/gererpersonnel";
+import Updateperson from "../components/AuthUser/Gestionnaire/gerepersonnel/Updateperson";
+import Ajouterperson from "../components/AuthUser/Gestionnaire/gerepersonnel/Ajouterperson";
+import Schedule from "../components/AuthUser/Gestionnaire/Schedule";
+
 
 export const router= createBrowserRouter([
     {
@@ -59,7 +65,7 @@ export const router= createBrowserRouter([
                 element:<GestionStock/>,
             },
             {
-                path:'/gest/ajouter',
+                path:'/gest/ajouterstock',
                 element:<AjouterElement/>,
             },
             {
@@ -74,7 +80,26 @@ export const router= createBrowserRouter([
                 path:'/gest/Compt',
                 element:<GestCompt/>,
             },
-            
+            {
+                path:'/gest/ajoutermenu',
+                element:<Ajoutermenu/>,
+            },
+            {
+                path:'/gest/gererperson',
+                element:<Gererpersonnel/>,
+            },
+            {
+                path:'/gest/updateperson',
+                element:<Updateperson/>,
+            },
+            {
+                path:'/gest/ajouterperson',
+                element:<Ajouterperson/>,
+            },
+            {
+                path:'/gest/schedule',
+                element:<Schedule/>,
+            },
         ]
     }
 ])

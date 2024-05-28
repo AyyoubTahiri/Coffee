@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CIcon from '@coreui/icons-react';
 import { cilSpeedometer } from '@coreui/icons';
 import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/system';
 
 const Analytics = () => {
   const navigate = useNavigate(); // Hook to programmatically navigate
@@ -94,6 +95,11 @@ const Analytics = () => {
 
   return (
     <>
+    <Box
+      
+      bgcolor="#f0f0f0"
+      p={2}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
         <div style={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
           <CIcon icon={cilSpeedometer} className="me-2" />
@@ -118,7 +124,7 @@ const Analytics = () => {
           <Pie data={pieChartData2} options={pieChartOptions2} ref={pieChartRef2} />
         </div>
       </div>
-      <Bar data={barChartData} options={barChartOptions} ref={barChartRef} />
+      <Bar data={barChartData} options={barChartOptions} ref={barChartRef} /></Box>
     </>
   );
 };

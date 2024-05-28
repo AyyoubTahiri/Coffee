@@ -6,7 +6,7 @@ const GestionnaireLayouts = () => {
     return (
       <div style={{ display: 'flex', height: '100vh' }}>
       <Sidebar />
-      <div style={{ flex: 1, padding: '20px', overflow: 'auto' }}>
+      <div style={{ flex: 1, padding: '20px', overflow: 'auto' }} >
         <Outlet />
       </div>
     </div>

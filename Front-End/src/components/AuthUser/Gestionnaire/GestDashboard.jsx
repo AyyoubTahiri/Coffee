@@ -3,7 +3,10 @@ import { Grid, Paper, Typography, Box, Card, CardContent } from '@mui/material';
 
 const ManagerDashboard = () => {
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
+    <Box sx={{ flexGrow: 1, padding: 2 }}
+    bgcolor="#f0f0f0"
+      p={2}
+    >
       <Grid container spacing={3}>
         {/* Dashboard Header */}
         <Grid item xs={12}>

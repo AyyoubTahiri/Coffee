@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AjouterElement = () => {
-    const [formData, setFormData] = useState({ element: '', quantite: '', date: '', prix: '', photo: null });
+const Ajoutermenu = () => {
+    const [formData, setFormData] = useState({ produit: '', description: '', date: '', prix: '', photo: null });
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -44,24 +44,24 @@ const AjouterElement = () => {
                     backgroundColor: '#f9f9f9'
                 }}
             >
-                <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Add New Element</h1>
+                <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Add New Product</h1>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Élément:</label>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Produit:</label>
                     <input
                         type="text"
-                        name="element"
-                        value={formData.element}
+                        name="produit"
+                        value={formData.produit}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Quantité:</label>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Description:</label>
                     <input
-                        type="number"
-                        name="quantite"
-                        value={formData.quantite}
+                        type="text"
+                        name="description"
+                        value={formData.description}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
@@ -135,4 +135,4 @@ const AjouterElement = () => {
     );
 };
 
-export default AjouterElement;
+export default Ajoutermenu;
