@@ -15,7 +15,7 @@ export const login = (email, password) => async dispatch => {
       type: 'LOGIN_SUCCESS',
       payload: { token, user }
     });
-
+    return { token, user };
     if (user.idRole === 1) { 
       // Assuming role is accessible directly and is named as such
       toast.success('Welcome Again  '+user.prenom,{

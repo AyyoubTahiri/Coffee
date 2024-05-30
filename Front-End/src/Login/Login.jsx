@@ -44,8 +44,7 @@ const Login = () => {
         console.log('Attempting login with:', { email, password });
 
         try {
-          const response = await dispatch(login(email, password));
-          const { user } = response.payload;
+            const { token, user } = await dispatch(login(email, password));          
 
           if (authenticated) {
               if (saveMe) {

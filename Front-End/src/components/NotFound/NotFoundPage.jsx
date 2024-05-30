@@ -18,7 +18,7 @@ const NotFoundPage = () => {
 
 
     // Determine the home URL based on the user's role
-    const homeUrl = authenticated && user ? getRolePath(user.role_id) : '/';
+    const homeUrl = authenticated && user ? getRolePath(user.idRole) : '/';
 
     
     return (

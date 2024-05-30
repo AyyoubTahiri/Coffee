@@ -27,6 +27,7 @@ import ServiceClient from "../components/AuthUser/Client/ServiceClient";
 import GestionCommande from "../components/AuthUser/Personnal/GestionCommande";
 import PersonnelLayouts from "../components/Layouts/PersonnelLayouts";
 import NotFoundPage from './../components/NotFound/NotFoundPage';
+import { setUser } from "../components/Redux/authActions"; // Import setUser action
 
 const DynamicRouter = () => {
     const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const DynamicRouter = () => {
     };
 
     const routes = useMemo(() => [
-        user ? getRoleBasedRoutes(user.role_id) : {
+        user ? getRoleBasedRoutes(user.idRole) : {
             path: '/',
             element: <GuestLayouts />,
             children: [

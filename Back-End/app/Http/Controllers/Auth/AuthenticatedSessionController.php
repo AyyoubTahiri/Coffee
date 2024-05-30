@@ -9,25 +9,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
+use Laravel\Sanctum\HasApiTokens;
 class AuthenticatedSessionController extends Controller
 {
-    
-    public function store(LoginRequest $request): Response
+
+    public function store(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-    
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        $credentials = $request->only('email', 'password');
+
+        // Attempt to log in the user using the Auth facade
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Generate new token
+            $token = $user->createToken('DIY_Token')->plainTextToken;
+            // $request->session()->regenerate();
+
             return response()->json([
-                'message' => 'The provided credentials are incorrect.'
-            ], 401);
+                'user' => $user,
+                'token' => $token,
+            ]);
         }
-    
-        $token = $user->createToken('caffe')->plainTextToken;
-    
-        return response()->json([
-            'token' => $token,
-            'user' => $user,
-        ]);
+
+        // If authentication fails, return error response
+        return response()->json(['error' => 'The provided credentials do not match our records.'], 401);
     }
 
     /**
