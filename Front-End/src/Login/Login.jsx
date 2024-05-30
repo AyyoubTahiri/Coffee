@@ -44,67 +44,56 @@ const Login = () => {
         console.log('Attempting login with:', { email, password });
 
         try {
-          // await fetchCSRFToken(); 
-            // const response = await login(email, password);
-            const response=await dispatch(login(email, password))
-             
-            const { status, data } = response;
-            if (authenticated) {
-              
-              if (data.token) {
-                setToken(data.token);
-                setUser(data.user);
-              }
+          const response = await dispatch(login(email, password));
+          const { user } = response.payload;
+
+          if (authenticated) {
               if (saveMe) {
-                window.localStorage.setItem('email', email);
-                window.localStorage.setItem('password', password);
-            } else {
-                localStorage.removeItem('email');
-                localStorage.removeItem('password');
-            }
-            
-            const rolePath = getRolePath(user.idRole);
-            navigate(rolePath)
-            
-            }
-          } catch (error) {
-            console.error("Loginnn error :", error);
-            if (error.response) {
-              console.log('statuss:' + error.response.status);
-              switch (error.response.status) {
-                case 401:
-                  setErrMsg('Non autorisé. Vérifiez vos identifiants "Email ou Password"');
-                  break;
-                case 400:
-                  setErrMsg('Adresse email ou mot de passe manquant');
-                  break;
-                case 500:
-                  setErrMsg('Un problème est survenu sur le serveur. Veuillez réessayer plus tard.');
-                  break;
+                  window.localStorage.setItem('email', email);
+                  window.localStorage.setItem('password', password);
+              } else {
+                  window.localStorage.removeItem('email');
+                  window.localStorage.removeItem('password');
               }
-            } else if (!error.response) {
-              setErrMsg('Aucune réponse du serveur');
-      
-            } else {
-              setErrMsg('Échec de la connexion. Veuillez réessayer');
-            }
-      
-      
+              const rolePath = getRolePath(user.idRole);
+              navigate(rolePath);
           }
-    }
-    const getRolePath = (roleId) => {
-      switch(roleId) {
-          case 1: return '/admin';
-          case 2: return '/moderator';
-          case 3: return '/creator';
+      } catch (error) {
+          console.error("Login error:", error);
+          if (error.response) {
+              switch (error.response.status) {
+                  case 401:
+                      setErrMsg('Non autorisé. Vérifiez vos identifiants "Email ou Password"');
+                      break;
+                  case 400:
+                      setErrMsg('Adresse email ou mot de passe manquant');
+                      break;
+                  case 500:
+                      setErrMsg('Un problème est survenu sur le serveur. Veuillez réessayer plus tard.');
+                      break;
+                  default:
+                      setErrMsg('Échec de la connexion. Veuillez réessayer');
+              }
+          } else {
+              setErrMsg('Aucune réponse du serveur');
+          }
+      }
+  };
+
+  const getRolePath = (roleId) => {
+      switch (roleId) {
+          case 1: return '/gest/dashboard';
+          case 2: return '/client/home';
+          case 3: return '/gest/personnel';
           default: return '/';
       }
   };
+
   useEffect(() => {
-    if (authenticated && user) {
-      const rolePath = getRolePath(user.idRole);
-      navigate(rolePath);
-    }
+      if (authenticated && user) {
+          const rolePath = getRolePath(user.idRole);
+          navigate(rolePath);
+      }
   }, [authenticated, user, navigate]);
     // if (loading || !authenticated) {
     //     return <div className="text-center text-primary" >

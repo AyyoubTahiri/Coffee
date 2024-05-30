@@ -1,6 +1,5 @@
-import { axiosClient } from '@/api/axios';
-import UserApi from '../Service/api/UserApi';
 import toast from 'react-hot-toast';
+import UserApi from '../../Service/api/UserApi';
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -26,11 +25,11 @@ export const login = (email, password) => async dispatch => {
           borderRadius: '8px',
         }
       });
-      dispatch(getUsers());
-      dispatch(getLevels())
-      dispatch(getRoles());
-      dispatch(getTutorials())
-      dispatch(getCategory());
+      // dispatch(getUsers());
+      // dispatch(getLevels())
+      // dispatch(getRoles());
+      // dispatch(getTutorials())
+      // dispatch(getCategory());
 
      // Fetch all users if the logged in user is an admin
     }
@@ -43,10 +42,10 @@ export const login = (email, password) => async dispatch => {
           borderRadius: '8px',
         }
       });
-      dispatch(getCategory());
-        dispatch(getTutorials())
-        dispatch(getCategory());
-      dispatch(getTutorials())
+      // dispatch(getCategory());
+      //   dispatch(getTutorials())
+      //   dispatch(getCategory());
+      // dispatch(getTutorials())
 
         // dispatch(getRoles());
      // Fetch all users if the logged in user is an admin
@@ -60,10 +59,10 @@ export const login = (email, password) => async dispatch => {
           borderRadius: '8px',
         }
       });
-      dispatch(getCategory());
-        dispatch(getTutorials())
-        dispatch(getCategory());
-      dispatch(getTutorials())
+      // dispatch(getCategory());
+      //   dispatch(getTutorials())
+      //   dispatch(getCategory());
+      // dispatch(getTutorials())
 
         // dispatch(getRoles());
      // Fetch all users if the logged in user is an admin
@@ -77,10 +76,10 @@ export const login = (email, password) => async dispatch => {
           borderRadius: '8px',
         }
       });
-      dispatch(getCategory());
-        dispatch(getTutorials())
-        dispatch(getCategory());
-      dispatch(getTutorials())
+      // dispatch(getCategory());
+      //   dispatch(getTutorials())
+      //   dispatch(getCategory());
+      // dispatch(getTutorials())
 
         // dispatch(getRoles());
      // Fetch all users if the logged in user is an admin

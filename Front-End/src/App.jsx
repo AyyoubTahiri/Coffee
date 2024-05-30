@@ -6,6 +6,9 @@ import "aos/dist/aos.css";
 import { Route, RouterProvider, Routes } from "react-router-dom";
 import Home from "./components/Home.jsx";
 import router from "./routes/Route.jsx";
+import { Provider } from 'react-redux';
+import DynamicRouter from "./routes/Route.jsx";
+import store from './components/Redux/Store';
 
 const App = () => {
   React.useEffect(() => {
@@ -20,7 +23,10 @@ const App = () => {
 
   return (
     <div>
-    <RouterProvider router={router}/>
+    {/* <RouterProvider router={router}/> */}
+    <Provider store={store}>
+      <DynamicRouter/>
+    </Provider>
     </div>
   );
 };
