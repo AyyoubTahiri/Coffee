@@ -9,13 +9,13 @@ import { Usercontext } from '../Context/AuthProvider';
 // import 'ldrs/quantum'
 // import { axiosClient, fetchCSRFToken } from '@/api/axios';
 // import { Usercontext } from '@/Context/AuthProvider';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { login } from '@/Redux/authActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../components/Redux/authActions';
 const Login = () => {
-    const { login, setAuthenticated, setToken ,loading,authenticated,setUser} = Usercontext()
+    // const { login, setAuthenticated, setToken ,loading,authenticated,setUser} = Usercontext()
     const [email,setEmail]=useState('');
-    // const dispatch = useDispatch();
-    // const { user, authenticated, loading } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    const { user, authenticated, loading } = useSelector(state => state.auth);
     const [password,setPassword]=useState('');
     const [ErrMsg,setErrMsg]=useState('');
     const [saveMe,setSaveMe]=useState(false)
@@ -46,26 +46,27 @@ const Login = () => {
         try {
           // await fetchCSRFToken(); 
             // const response = await login(email, password);
-             await login(email, password)
-             navigate('/gest/dashboard')
-            // const { status, data } = response;
-            // if (authenticated) {
-            //   // setAuthenticated(true);
-            //   // if (data.token) {
-            //   //   setToken(data.token);
-            //   //   setUser(data.user);
-            //   // }
-            //   if (saveMe) {
-            //     window.localStorage.setItem('email', email);
-            //     window.localStorage.setItem('password', password);
-            // } else {
-            //     localStorage.removeItem('email');
-            //     localStorage.removeItem('password');
-            // }
-            //   // Navigate based on user role
-            // // const rolePath = getRolePath(user.role_id);
+            const response=await dispatch(login(email, password))
+             
+            const { status, data } = response;
+            if (authenticated) {
+              
+              if (data.token) {
+                setToken(data.token);
+                setUser(data.user);
+              }
+              if (saveMe) {
+                window.localStorage.setItem('email', email);
+                window.localStorage.setItem('password', password);
+            } else {
+                localStorage.removeItem('email');
+                localStorage.removeItem('password');
+            }
             
-            // }
+            const rolePath = getRolePath(user.idRole);
+            navigate(rolePath)
+            
+            }
           } catch (error) {
             console.error("Loginnn error :", error);
             if (error.response) {
@@ -96,16 +97,15 @@ const Login = () => {
           case 1: return '/admin';
           case 2: return '/moderator';
           case 3: return '/creator';
-          case 4: return '/standard';
           default: return '/';
       }
   };
-  // useEffect(() => {
-  //   if (authenticated && user) {
-  //     const rolePath = getRolePath(user.role_id);
-  //     navigate(rolePath);
-  //   }
-  // }, [authenticated, user, navigate]);
+  useEffect(() => {
+    if (authenticated && user) {
+      const rolePath = getRolePath(user.idRole);
+      navigate(rolePath);
+    }
+  }, [authenticated, user, navigate]);
     // if (loading || !authenticated) {
     //     return <div className="text-center text-primary" >
 

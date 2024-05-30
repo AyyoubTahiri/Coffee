@@ -10,19 +10,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->string('prenom');
-            $table->string('address');
-            $table->string('email')->unique();
-            $table->string('numero');
-            $table->string('password');
-            $table->unsignedBigInteger('idRole');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-        });
+                Schema::create('users', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('nom');
+                    $table->string('prenom');
+                    $table->string('address');
+                    $table->string('email')->unique();
+                    $table->string('numero');
+                    $table->string('password');
+                    $table->unsignedBigInteger('idRole');
+                    $table->timestamp('email_verified_at')->nullable();
+                    $table->rememberToken();
+                    $table->timestamps();
+                });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

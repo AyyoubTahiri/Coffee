@@ -8,14 +8,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+   
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('idRole')->references('id')->on('Role')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::table('reservations', function (Blueprint $table) {
-            $table->foreign('idTable')->references('id')->on('tablecafes')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idTable')->references('id')->on('tablecoffees')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idCommande')->references('id')->on('commandes')->onDelete('cascade')->onUpdate('cascade');
         });
 
@@ -23,12 +24,16 @@ return new class extends Migration
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idTypeCommand')->references('id')->on('typecommandes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('idPaiment')->references('id')->on('typePaiment')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idPaiment')->references('id')->on('typepaiements')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::table('produits', function (Blueprint $table) {
-            $table->foreign('idIngrediant')->references('id')->on('ingredient')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('idCategorie')->references('id')->on('catégorie')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idIngrediant')->references('id')->on('stocks')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idCategorie')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+        });
+
+        Schema::table('stocks', function (Blueprint $table) {
+            $table->foreign('idIngredient')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::table('jaims', function (Blueprint $table) {
@@ -36,15 +41,12 @@ return new class extends Migration
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
         });
 
-        Schema::table('stocks', function (Blueprint $table) {
-            $table->foreign('idIngredient')->references('id')->on('ingredient')->onDelete('cascade')->onUpdate('cascade');
-        });
-
-        Schema::table('commentaire', function (Blueprint $table) {
+        Schema::table('commentaires', function (Blueprint $table) {
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idProduit')->references('id')->on('produits')->onDelete('cascade')->onUpdate('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.
