@@ -1,0 +1,68 @@
+const ordersData = [
+    {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@example.com',
+      orderType: 'Café',
+      orderContent: 'Café Latte',
+      orderTime: '08:30',
+      status: 'En attente',
+    },
+    {
+      id: 2,
+      name: 'Jane Smith',
+      email: 'jane@example.com',
+      orderType: 'Café',
+      orderContent: 'Espresso',
+      orderTime: '08:45',
+      status: 'En cours de préparation',
+    },
+    {
+      id: 3,
+      name: 'Alice Johnson',
+      email: 'alice@example.com',
+      orderType: 'Café',
+      orderContent: 'Cappuccino',
+      orderTime: '09:00',
+      status: 'En attente',
+    },
+    {
+      id: 4,
+      name: 'Bob Williams',
+      email: 'bob@example.com',
+      orderType: 'Café',
+      orderContent: 'Americano',
+      orderTime: '09:15',
+      status: 'Expirée',
+    },
+    {
+      id: 5,
+      name: 'Charlie Brown',
+      email: 'charlie@example.com',
+      orderType: 'Café',
+      orderContent: 'Macchiato',
+      orderTime: '09:30',
+      status: 'Prête pour livraison/retrait',
+    },
+    {
+      id: 6,
+      name: 'Dave Wilson',
+      email: 'dave@example.com',
+      orderType: 'Café',
+      orderContent: 'Mocha',
+      orderTime: '09:45',
+      status: 'En attente',
+    },
+    {
+      id: 7,
+      name: 'Eve Davis',
+      email: 'eve@example.com',
+      orderType: 'Café',
+      orderContent: 'Flat White',
+      orderTime: '10:00',
+      status: 'En cours de préparation',
+    },
+  ];
+  
+  export default ordersData;
+  

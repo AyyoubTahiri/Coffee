@@ -1,0 +1,13 @@
+.nav-link {
+    color: white !important;
+    padding: 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    width: 200px;
+  }
+  
+  .nav-link:hover {
+    background-color: #5D4037;
+    color: white !important;
+  }
