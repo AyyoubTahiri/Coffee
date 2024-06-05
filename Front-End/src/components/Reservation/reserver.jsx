@@ -2,7 +2,6 @@ import React from 'react';
 import { memo } from 'react';
 
 
-import resets from '../_resets.module.css';
 import { ImageIcon } from './ImageIcon';
 import classes from './Reservation.module.css';
 import { SvgIcon } from './SvgIcon';

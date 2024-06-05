@@ -105,16 +105,7 @@ const Analytics = () => {
           <CIcon icon={cilSpeedometer} className="me-2" />
           Sales Analytics
         </div>
-        <CButton
-          color="primary"
-          variant="outlined"
-          style={{ borderColor: '#795548', color: '#795548', transition: 'color 0.3s, background-color 0.3s' }}
-          className="hover-effect"
-          onClick={() => navigate('/gest/ajouter')}
-          startIcon={<AddIcon />}
-        >
-          Ajouter
-        </CButton>
+        
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <div style={{ width: '300px', height: '300px' }}>

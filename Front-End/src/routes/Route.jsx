@@ -23,11 +23,23 @@ import Schedule from "../components/AuthUser/Gestionnaire/Schedule";
 import ClientLayouts from "../components/Layouts/ClientLayouts";
 import HomeClient from "../components/AuthUser/Client/HommeClient";
 import ClientMenu from "../components/AuthUser/Client/ClientMenu";
-import ServiceClient from "../components/AuthUser/Client/ServiceClient";
+
 import GestionCommande from "../components/AuthUser/Personnal/GestionCommande";
 import PersonnelLayouts from "../components/Layouts/PersonnelLayouts";
 import NotFoundPage from './../components/NotFound/NotFoundPage';
 import { setUser } from "../components/Redux/authActions"; // Import setUser action
+
+import ServicesClient from "../components/AuthUser/Client/ServicesClient";
+import Reservation from "../components/AuthUser/Client/reservation";
+import Contacts from '../components/AuthUser/Client/Contacts';
+import CartPage from "../components/AuthUser/Client/cardpage";
+import InventoryPage from "../components/AuthUser/Gestionnaire/dashboardgest/inventory";
+import RecentActivitiesPage from "../components/AuthUser/Gestionnaire/dashboardgest/RecentActivitiesPage";
+import PromotionsPage from "../components/AuthUser/Gestionnaire/dashboardgest/PromotionsPage";
+import FeedbackPage from "../components/AuthUser/Gestionnaire/dashboardgest/FeedbackPage";
+import OrderMethodPage from "../components/AuthUser/Client/OrderMethodPage";
+import PaymentForm from "../components/AuthUser/Client/paiment";
+import { CartProvider } from '../components/AuthUser/Client/CartContext'; // Import CartProvider
 
 const DynamicRouter = () => {
     const dispatch = useDispatch();
@@ -62,15 +74,24 @@ const DynamicRouter = () => {
                         { path: '/gest/updateperson', element: <Updateperson /> },
                         { path: '/gest/ajouterperson', element: <Ajouterperson /> },
                         { path: '/gest/schedule', element: <Schedule /> },
+                        { path: '/gest/inventory', element: <InventoryPage /> },
+                        { path: '/gest/activite', element: <RecentActivitiesPage /> },
+                        { path: '/gest/promo', element: <PromotionsPage /> },
+                        { path: '/gest/feedback', element: <FeedbackPage /> },
                     ]
                 };
             case 2: // Client
                 return {
-                    element: <ClientLayouts />,
+                    element: <CartProvider><ClientLayouts /></CartProvider>,
                     children: [
                         { path: '/client/home', element: <HomeClient /> },
                         { path: '/client/menu', element: <ClientMenu /> },
-                        { path: '/client/service', element: <ServiceClient /> },
+                        { path: '/client/service', element: <ServicesClient /> },
+                        { path: '/client/methodeorder', element: <OrderMethodPage /> },
+                        { path: '/client/reserv', element: <Reservation /> },
+                        { path: '/client/contact', element: <Contacts /> },
+                        { path: '/client/card', element: <CartPage /> },
+                        { path: '/client/paiment', element: <PaymentForm /> },
                     ]
                 };
             case 3: // Personnel
@@ -122,123 +143,3 @@ const DynamicRouter = () => {
 };
 
 export default DynamicRouter;
-
-// export const router= createBrowserRouter([
-//     {
-//         element:<GuestLayouts/>,
-//         children:[
-//             {
-//                 path:'/',
-//                 element:<Home/>,
-//             },
-//             {
-//                 path:'/services',
-//                 element:<Services/>,
-//             },
-            
-           
-//             {
-//                 path:'/about',
-//                 element:<About/>,
-//             },
-          
-            
-            
-//         ]
-//     },{
-//         element:<LoginLayouts/>,
-//         children:[
-//             {
-//                 path:'/login',
-//                 element:<Login/>,
-//             },
-//         ]
-//     },{
-//         element:<GestionnaireLayouts/>,
-//         children:[
-//             {
-//                 path:'/gest/dashboard',
-//                 element:<GestDashboard/>,
-//             },
-//             {
-//                 path:'/gest/stock',
-//                 element:<GestionStock/>,
-//             },
-//             {
-//                 path:'/gest/ajouterstock',
-//                 element:<AjouterElement/>,
-//             },
-//             {
-//                 path:'/gest/Analytic',
-//                 element:<Analytic/>,
-//             },
-//              {
-//                 path:'/gest/menu',
-//                 element:<GestMenu/>,
-//             },
-//             {
-//                 path:'/gest/Compt',
-//                 element:<GestCompt/>,
-//             },
-//             {
-//                 path:'/gest/ajoutermenu',
-//                 element:<Ajoutermenu/>,
-//             },
-//             {
-//                 path:'/gest/gererperson',
-//                 element:<Gererpersonnel/>,
-//             },
-//             {
-//                 path:'/gest/updateperson',
-//                 element:<Updateperson/>,
-//             },
-//             {
-//                 path:'/gest/ajouterperson',
-//                 element:<Ajouterperson/>,
-//             },
-//             {
-//                 path:'/gest/schedule',
-//                 element:<Schedule/>,
-//             },
-//         ]
-//     },{
-//         element:<ClientLayouts/>,
-//         children:[
-
-//             {
-//                 path:'/Client/Home',
-//                 element:<HomeClient/>,
-//             },
-            
-            
-//             {
-//                 path:'/Client/Menu',
-//                 element:<ClientMenu/>,
-//             },
-         
-
-           
-//             {
-//                 path:'/Client/service',
-//                 element:<ServiceClient/>,
-//             },
-//             {
-//                 path:'/Client/Special',
-//                 element:<ClientSpecial/>,
-//             },
-         
-//         ]
-//     }
-//     ,{
-//         element:<PersonnelLayouts/>,
-//         children:[
-//             {
-//                 path:'/gest/personnel',
-//                 element:<GestionCommande/>,
-//             }
-            
-            
-//         ]
-//     }
-// ])
-// export default router

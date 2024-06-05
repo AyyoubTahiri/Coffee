@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardActions, Button, Typography, Grid, Box, CardMedia, Collapse } from '@mui/material';
+import {
+  Card, CardContent, CardActions, Button, Typography, Grid, Box, CardMedia, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Client from "../../../assets/11-client-mystere-restaurant.jpg";
 import Serveuse from "../../../assets/website/14074817lpw-14074831-article-serveur-restaurant-cafe-jpg_5112711_660x287.webp";
@@ -35,14 +37,30 @@ const Gererpersonnel = () => {
     },
   ]);
   const [details, setDetails] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
 
   const toggleDetails = (id) => {
     setDetails(details.includes(id) ? details.filter(detailId => detailId !== id) : [...details, id]);
   };
 
+  const handleDeleteClick = (id) => {
+    setSelectedEmployeeId(id);
+    setOpenDialog(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setEmployees(employees.filter(employee => employee.id !== selectedEmployeeId));
+    setOpenDialog(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDialog(false);
+    setSelectedEmployeeId(null);
+  };
+
   return (
-    <Box display="flex" flexDirection="column" alignItems="flex-start" minHeight="100vh" bgcolor="#f0f0f0"
-    p={2}>
+    <Box display="flex" flexDirection="column" alignItems="flex-start" minHeight="100vh" bgcolor="#f0f0f0" p={2}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '20px' }}>
         <div style={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
           <AccountBalanceIcon style={{ fill: 'white', marginRight: '5px' }} />
@@ -109,7 +127,7 @@ const Gererpersonnel = () => {
                   Update
                 </Button>
                 <Button
-                  component={Link}
+                  onClick={() => handleDeleteClick(employee.id)}
                   color="secondary"
                   sx={{ backgroundColor: '#FF7043', color: 'white', padding: '5px 10px', borderRadius: '5px' }}
                 >
@@ -129,39 +147,61 @@ const Gererpersonnel = () => {
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     Hire Date: {employee.hireDate}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Shift Timing: {employee.shiftTiming}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Department: {employee.department}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Achievements: {employee.achievements}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Supervisor: {employee.supervisor}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Pending Tasks: {employee.pendingTasks}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Total Orders Today: {employee.ordersToday}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Total Orders This Month: {employee.totalOrders}
-</Typography>
-<Typography variant="body2" color="textSecondary">
-Experience Level: {employee.experienceLevel}
-</Typography>
-</CardContent>
-</Collapse>
-</Card>
-</Grid>
-))}
-</Grid>
-</Box>
-);
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Shift Timing: {employee.shiftTiming}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Department: {employee.department}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Achievements: {employee.achievements}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Supervisor: {employee.supervisor}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Pending Tasks: {employee.pendingTasks}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Total Orders Today: {employee.ordersToday}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Total Orders This Month: {employee.totalOrders}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Experience Level: {employee.experienceLevel}
+                  </Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleDeleteCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this employee?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
 };
 
 export default Gererpersonnel;

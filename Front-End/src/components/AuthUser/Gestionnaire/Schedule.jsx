@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import {
   Table,
   TableBody,
@@ -41,6 +42,12 @@ const Schedule = () => {
     const filteredEmployees = activeDays.filter((emp) => emp.days.includes(selectedDay));
     setActiveDays(filteredEmployees);
   };
+  const dispatch = useDispatch();
+
+  const handleActivate = (waiterId) => {
+      dispatch(setActiveWaiter(waiterId));
+  };
+
 
   return (
     <>
@@ -69,7 +76,9 @@ const Schedule = () => {
                   <TableCell>{emp.name}</TableCell>
                   <TableCell>
                     <Button
-                      onClick={() => toggleStatus(emp.name, "monday")}
+                      onClick={() => {toggleStatus(emp.name, "monday")
+                      handleActivate(emp.name)
+                      }}
                       style={{
                         backgroundColor: emp.monday === "Active" ? "green" : "red",
                         color: "white",

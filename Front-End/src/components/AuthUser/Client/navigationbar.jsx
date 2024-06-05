@@ -6,22 +6,27 @@ const Menu = [
   {
     id: 1,
     name: "Home",
-    link: "/Client/Home",
+    link: "/client/Home",
   },
   {
     id: 2,
     name: "Menu",
-    link: "/Client/Menu",
+    link: "/client/Menu",
   },
   {
     id: 3,
     name: "Services",
-    link: "/Client/Service",
+    link: "/client/Service",
   },
   {
     id: 5,
     name: "Special",
-    link: "/Client/special",
+    link: "/client/special",
+  },
+  {
+    id: 6,
+    name: "Contact",
+    link: "/client/contact",
   },
 ];
 

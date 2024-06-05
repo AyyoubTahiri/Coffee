@@ -1,122 +1,178 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Button, Grid, Card, CardContent, CardActions, CardMedia, Collapse, Switch, FormControlLabel } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/material/styles';
-import BackgroundCafeImage from '../../../../public/assets/divTextWhite.jpeg';
-import { ExpandMore } from '@mui/icons-material';
+import React from 'react';
+import { Container, Grid, Typography, Card, CardContent, CardActions, Button, TextField, MenuItem, Select, FormControl, InputLabel, Box } from '@mui/material';
 
-const HomeClient = () => {
-  const [userName, setUserName] = useState('');
-  const [expandedId, setExpandedId] = useState(-1);
-  const [playMusic, setPlayMusic] = useState(false);
+const HomeClient = ({ client }) => {
+  const [persons, setPersons] = React.useState('');
+  const [date, setDate] = React.useState('');
+  const [time, setTime] = React.useState('');
 
-  useEffect(() => {
-    const userEmail = "client@example.com";
-    const name = extractNameFromEmail(userEmail);
-    setUserName(name);
-  }, []);
-
-  const handleExpandClick = (id) => {
-    setExpandedId(expandedId === id ? -1 : id);
+  const handlePersonsChange = (event) => {
+    setPersons(event.target.value);
   };
 
-  const handleMusicChange = () => {
-    setPlayMusic(!playMusic);
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
   };
 
-  function extractNameFromEmail(email) {
-    return email.substring(0, email.indexOf('@'));
-  }
-
-  const styles = {
-    card: {
-      maxWidth: 345,
-      margin: 'auto',
-      backgroundColor: '#efebe9',
-      borderRadius: '15px',
-      boxShadow: '5px 5px 15px rgba(0,0,0,0.2)'
-    },
-    button: {
-      backgroundColor: '#6d4c41',
-      color: '#ffffff',
-      '&:hover': {
-        backgroundColor: '#5d4037'
-      }
-    },
-    typography: {
-      color: '#3e2723'
-    },
-    background: {
-      backgroundImage: `url(${BackgroundCafeImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      padding: '20px',
-      borderRadius: '8px'
-    }
+  const handleTimeChange = (event) => {
+    setTime(event.target.value);
   };
 
-  const employees = [
-    { id: 1, name: "Alice", role: "Barista", description: "Expert en café italien et latte art.", image: 'path/to/image1.jpg', moreInfo: "Alice a remporté plusieurs compétitions de latte art." },
-    { id: 2, name: "Bob", role: "Chef", description: "Spécialiste des pâtisseries et des desserts gourmands.", image: 'path/to/image2.jpg', moreInfo: "Bob a étudié la pâtisserie à Paris." },
-    { id: 3, name: "Clara", role: "Manager", description: "Gère l'opération quotidienne et la satisfaction client.", image: 'path/to/image3.jpg', moreInfo: "Clara est reconnue pour son excellent service client et sa gestion efficace." }
-  ];
+  // Providing default values if client is undefined or properties are missing
+  const name = client?.name || 'Guest';
+  const loyaltyPoints = client?.loyaltyPoints || 0;
+  const recentOrders = client?.recentOrders || [];
+  const upcomingReservations = client?.upcomingReservations || [];
+  const featuredItems = client?.featuredItems || [];
 
   return (
-    <div style={styles.background}>
-      <Typography variant="h3" style={styles.typography} gutterBottom align="center">
-        Welcome to Our Café, {userName}!
+    <Container maxWidth="lg" style={{ marginTop: '20px' }}>
+      <Typography variant="h4" gutterBottom>
+        Welcome back, {name}!
       </Typography>
-      <FormControlLabel
-        control={<Switch checked={playMusic} onChange={handleMusicChange} />}
-        label="Play Ambient Music"
-        labelPlacement="start"
-        style={{ color: '#fff', marginLeft: '20px' }}
-      />
-      <Grid container spacing={3} justifyContent="center">
-        {employees.map((employee) => (
-          <Grid item key={employee.id} xs={12} sm={6} md={4}>
-            <Card style={styles.card} raised>
-              <CardMedia
-                component="img"
-                height="140"
-                image={employee.image}
-                alt={employee.name}
-              />
-              <CardContent>
-                <Typography variant="h5" component="div" style={styles.typography}>
-                  {employee.name}
-                </Typography>
-                <Typography color="textSecondary">
-                  {employee.role}
-                </Typography>
-                <Typography variant="body2" style={styles.typography}>
-                  {employee.description}
-                </Typography>
-              </CardContent>
-              <CardActions disableSpacing>
-                <Button size="small" style={styles.button}>Learn More</Button>
-                <ExpandMore
-                  expand={expandedId === employee.id}
-                  onClick={() => handleExpandClick(employee.id)}
-                  aria-expanded={expandedId === employee.id}
-                  aria-label="show more"
-                >
-                  <ExpandMoreIcon />
-                </ExpandMore>
-              </CardActions>
-              <Collapse in={expandedId === employee.id} timeout="auto" unmountOnExit>
-                <CardContent>
-                  <Typography paragraph style={styles.typography}>
-                    {employee.moreInfo}
-                  </Typography>
-                </CardContent>
-              </Collapse>
-            </Card>
-          </Grid>
-        ))}
+      
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={8}>
+          <iframe
+            title="map"
+            width="100%"
+            height="450"
+            frameBorder="0"
+            style={{ border: 0 }}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.9980177077787!2d-74.00871228463238!3d40.7139489793316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a198b654f39%3A0x5a2e7ab653409fd9!2s41%20Park%20Row%2C%20New%20York%2C%20NY%2010008%2C%20USA!5e0!3m2!1sen!2s!4v1594366795361!5m2!1sen!2s"
+            allowFullScreen
+          ></iframe>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Box component="form" noValidate autoComplete="off" style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+            <Typography variant="h6" gutterBottom>
+              #Reservation
+            </Typography>
+            <Typography variant="h4" gutterBottom>
+              BOOK A TABLE
+            </Typography>
+            <TextField fullWidth label="Your Email" margin="normal" variant="outlined" />
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <InputLabel id="persons-select-label">Persons</InputLabel>
+              <Select
+                labelId="persons-select-label"
+                value={persons}
+                onChange={handlePersonsChange}
+                label="Persons"
+              >
+                {[...Array(10)].map((_, i) => (
+                  <MenuItem key={i} value={i + 1}>{i + 1}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              fullWidth
+              label="Date"
+              type="date"
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={date}
+              onChange={handleDateChange}
+            />
+            <TextField
+              fullWidth
+              label="Time"
+              type="time"
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={time}
+              onChange={handleTimeChange}
+            />
+            <TextField fullWidth label="Your Message" margin="normal" variant="outlined" multiline rows={4} />
+            <Button variant="contained" color="primary" fullWidth style={{ marginTop: '20px' }}>
+              BOOK A TABLE
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-    </div>
+
+      <Typography variant="h4" style={{ marginTop: '40px' }} gutterBottom>
+        Your Dashboard
+      </Typography>
+      
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Your Loyalty Points</Typography>
+              <Typography variant="h6">{loyaltyPoints} Points</Typography>
+              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
+                Redeem Rewards
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Recent Orders</Typography>
+              {recentOrders.length > 0 ? (
+                recentOrders.map((order, index) => (
+                  <Typography key={index} variant="body1">
+                    {order}
+                  </Typography>
+                ))
+              ) : (
+                <Typography variant="body1">No recent orders</Typography>
+              )}
+              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
+                View All Orders
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Upcoming Reservations</Typography>
+              {upcomingReservations.length > 0 ? (
+                upcomingReservations.map((reservation, index) => (
+                  <Typography key={index} variant="body1">
+                    {reservation.date} at {reservation.time}
+                  </Typography>
+                ))
+              ) : (
+                <Typography variant="body1">No upcoming reservations</Typography>
+              )}
+              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
+                Make a Reservation
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      
+      <Typography variant="h4" style={{ marginTop: '40px' }} gutterBottom>
+        Featured Items
+      </Typography>
+      <Grid container spacing={4}>
+        {featuredItems.length > 0 ? (
+          featuredItems.map((item, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">{item.name}</Typography>
+                  <Typography variant="body2">{item.description}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="body1">No featured items available</Typography>
+        )}
+      </Grid>
+    </Container>
   );
 };
 
