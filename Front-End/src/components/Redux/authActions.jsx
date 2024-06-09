@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import UserApi from '../../Service/api/UserApi';
+import UserApi from '../../service/api/UserApi';
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -10,12 +10,13 @@ export const login = (email, password) => async dispatch => {
     localStorage.setItem('AUTHENTICATED', 'true');
     // localStorage.setItem('email', email);
     // localStorage.setItem('password', password);
-
+    dispatch(getIngredient())
     dispatch({
       type: 'LOGIN_SUCCESS',
       payload: { token, user }
     });
     return { token, user };
+    
     if (user.idRole === 1) { 
       // Assuming role is accessible directly and is named as such
       toast.success('Welcome Again  '+user.prenom,{
@@ -129,6 +130,77 @@ export const register = (data) => async dispatch => {
 //       dispatch({ type: 'LOGOUT_FAILURE', error: error });  // Dispatch a failure action
 //   }
 // };
+// Redux/cartActions.js
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY';
+
+export const addToCart = (item) => ({
+  type: ADD_TO_CART,
+  payload: item,
+});
+
+export const removeItemFromCart = (index) => ({
+  type: REMOVE_FROM_CART,
+  payload: index,
+});
+
+export const updateItemQuantity = (index, quantity) => ({
+  type: UPDATE_ITEM_QUANTITY,
+  payload: { index, quantity },
+});
+
+export const createOrder = (orderData, onSuccess) => async dispatch => {
+  dispatch({ type: 'SET_LOADING', payload: true });
+  try {
+    const response = await UserApi.createOrder(orderData);
+    dispatch({
+      type: 'CREATE_ORDER',
+      payload: response.data,
+    });
+    toast.success('Order created successfully!');
+    if (onSuccess) {
+      onSuccess();
+    }
+  } catch (error) {
+    console.error('Error creating order:', error);
+    toast.error(`Error: ${error.response ? error.response.data.message : error.message}`);
+  } finally {
+    dispatch({ type: 'SET_LOADING', payload: false });
+  }
+};
+
+export const Gettypepaiements = () => async dispatch  => { 
+  dispatch({ type: 'SET_LOADING', payload: true });
+  try {
+    const response = await UserApi.getTypePaiements();
+    console.log(response); // Ensure UserApi.getUsers() is correctly implemented
+    dispatch({
+      type: 'type_paiment',
+      payload: response.data
+    });
+  } catch (error) {
+    console.error("Error fetching ingredient :", error);
+  } finally {
+    dispatch({ type: 'SET_LOADING', payload: false });
+  }
+}
+export const Gettypecommandes = () => async dispatch  => { 
+  dispatch({ type: 'SET_LOADING', payload: true });
+  try {
+    const response = await UserApi.getTypeCommandes();
+    console.log(response); // Ensure UserApi.getUsers() is correctly implemented
+    dispatch({
+      type: 'type_commande',
+      payload: response.data
+    });
+  } catch (error) {
+    console.error("Error fetching ingredient :", error);
+  } finally {
+    dispatch({ type: 'SET_LOADING', payload: false });
+  }
+}
+
 export const logout = () => async dispatch => {
   dispatch({ type: 'SET_LOADING', payload: true });
   try{
@@ -150,7 +222,7 @@ export const logout = () => async dispatch => {
   export const getUsers = () => async dispatch => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.getUsers(); // Ensure UserApi.getUsers() is correctly implemented
+      const response = await UserApi.getusers(); // Ensure UserApi.getUsers() is correctly implemented
       dispatch({
         type: 'SET_USERS',
         payload: response.data
@@ -170,87 +242,92 @@ export const logout = () => async dispatch => {
     };
   };
 
-  export const getLevels = () => async dispatch  => { 
+  export const getIngredient = () => async dispatch  => { 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.getLevels(); // Ensure UserApi.getUsers() is correctly implemented
+      const response = await UserApi.getIngredi();
+      console.log(response); // Ensure UserApi.getUsers() is correctly implemented
       dispatch({
-        type: 'SET_LEVELS',
+        type: 'SET_INGREDIENTS',
         payload: response.data
       });
     } catch (error) {
-      console.error("Error fetching Levels :", error);
+      console.error("Error fetching ingredient :", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
   }
 
-  export const getRoles = () => async dispatch  => { 
+  export const AddStocks = (StockData,onSuccess) => async dispatch  => { 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.getRoles(); // Ensure UserApi.getUsers() is correctly implemented
-      dispatch({
-        type: 'SET_ROLES',
-        payload: response.data
-      });
+      const response = await UserApi.addstock(StockData); // Ensure UserApi.getUsers() is correctly implemented
+      if (onSuccess) {
+        onSuccess(); 
+        
+          dispatch(getStock());
+         // Reset form on success
+    }
     } catch (error) {
-      console.error("Error fetching ROLES :", error);
+      console.error("Error adding stocks :", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
   }
-  export const getTutorials = () => async dispatch  => { 
+  export const getStock = () => async dispatch  => { 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.getTutorials(); // Ensure UserApi.getUsers() is correctly implemented
+      const response = await UserApi.getstock(); // Ensure UserApi.getUsers() is correctly implemented
       dispatch({
-        type: 'SET_TUTORIALS',
+        type: 'SET_STOCKS',
         payload: response.data
       });
     } catch (error) {
-      console.error("Error fetching TUTORIALS :", error);
+      console.error("Error fetching STOCKS :", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
   }
 
 
-  export const AddUser = (UserData,onSuccess) => async dispatch  => { 
+  export const AddProduits = (UserData,onSuccess) => async dispatch  => { 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.Add_User(UserData);
+      const response = await UserApi.addproduit(UserData);
       // dispatch({
       //   type: 'ADD_USERE',
       //   payload: response.data
       // });
-      toast.success('User added successfully!');
+      toast.success('produit added successfully!');
       if (onSuccess) {
           onSuccess(); 
           
-            dispatch(getUsers());
+            dispatch(getIngredient());
+            dispatch(getProduits());
+
            // Reset form on success
       }
       
     } catch (error) {
       toast.error(`Error: ${error.response ? error.response.data.message : error.message}`);
-      console.error("Error fetching ADDING USERS :", error);
+      console.error("Error fetching ADDING produit :", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
   }
 
-  export const updateUser = (userId, userData, onSuccess) => async dispatch => {
+  export const getProduits = ( ) => async dispatch => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.updateUser(userId, userData);
-      toast.success('User updated successfully!');
-      if (onSuccess) {
-          onSuccess();
-          dispatch(getUsers()); // Fetch updated list of users
-      }
+      const response = await UserApi.getproduit();
+      dispatch({
+        type: 'SET_PRODUITS',
+        payload: response.data
+      });
+     
     } catch (error) {
       toast.error(`Error: ${error.response ? error.response.data.message : error.message}`);
-      console.error("Error updating user:", error);
+      console.error("Error updating produits:", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
@@ -260,7 +337,7 @@ export const logout = () => async dispatch => {
   export const getCategory = () => async dispatch => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.getCategory(); // Ensure UserApi.getUsers() is correctly implemented
+      const response = await UserApi.getcategorie(); // Ensure UserApi.getUsers() is correctly implemented
       dispatch({
         type: 'SET_CATEGORY',
         payload: response.data
@@ -275,25 +352,40 @@ export const logout = () => async dispatch => {
   };
 
 
-  export const AddTutorial = (TutoData,onSuccess) => async dispatch  => { 
+  export const AddUseres = (TutoData,onSuccess) => async dispatch  => { 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await UserApi.addTutorial(TutoData);
+      const response = await UserApi.addusers(TutoData);
       // dispatch({
       //   type: 'ADD_USERE',
       //   payload: response.data
       // });
-      toast.success('Tutorial added successfully!');
+      toast.success('USERS added successfully!');
       if (onSuccess) {
           onSuccess(); 
           
-            // dispatch(getUsers());
+            dispatch(getUsers());
            // Reset form on success
       }
       
     } catch (error) {
       toast.error(`Error: ${error.response ? error.response.data.message : error.message}`);
-      console.error("Error fetching ADDING Tutorials :", error);
+      console.error("Error fetching ADDING USERS :", error);
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  }
+  export const getRoles= () => async dispatch  => { 
+    dispatch({ type: 'SET_LOADING', payload: true });
+    try {
+      const response = await UserApi.getroles();
+      console.log(response); // Ensure UserApi.getUsers() is correctly implemented
+      dispatch({
+        type: 'SET_ROLES',
+        payload: response.data
+      });
+    } catch (error) {
+      console.error("Error fetching ROLES :", error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }

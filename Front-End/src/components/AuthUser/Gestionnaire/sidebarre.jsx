@@ -1,9 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { ShoppingCart, BarChart, MenuBook, Dashboard, AccountBalance, CalendarToday } from '@mui/icons-material';
+import { ShoppingCart, BarChart, MenuBook, Dashboard, AccountBalance, CalendarToday, Kitchen, ExitToApp } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../components/Redux/authActions';  // Adjust the import according to your project structure
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <div style={{ width: '250px', backgroundColor: '#f0f0f0', height: '100vh' }}>
       <List>
@@ -42,6 +52,18 @@ const Sidebar = () => {
             <CalendarToday />
           </ListItemIcon>
           <ListItemText primary="Schedule" />
+        </ListItem>
+        <ListItem button component={Link} to="/gest/ingredients">
+          <ListItemIcon>
+            <Kitchen />
+          </ListItemIcon>
+          <ListItemText primary="Ingredients" />
+        </ListItem>
+        <ListItem button onClick={handleLogout}>
+          <ListItemIcon>
+            <ExitToApp />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
         </ListItem>
       </List>
     </div>

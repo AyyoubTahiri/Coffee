@@ -1,62 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Card, CardContent, CardActions, Button, Typography, Grid, Box, CardMedia, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Card, CardContent, CardActions, Button, Typography, Grid, Box, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import Client from "../../../assets/11-client-mystere-restaurant.jpg";
-import Serveuse from "../../../assets/website/14074817lpw-14074831-article-serveur-restaurant-cafe-jpg_5112711_660x287.webp";
-import Personnel from "../../../assets/website/rever-de-faire-du-cafe-en-islam.webp";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from '../../Redux/authActions';
 
 const Gererpersonnel = () => {
   const navigate = useNavigate();
-  const [employees, setEmployees] = useState([
-    {
-      id: 1, name: 'Employee 1', role: 'Manager', active: true, ordersToday: 5,
-      totalOrders: 100, experienceLevel: 'Expert', email: 'employee1@example.com', phone: '123-456-7890',
-      hireDate: '2020-01-15', shiftTiming: '9 AM - 5 PM', department: 'Management', achievements: 'Employee of the Month',
-      supervisor: 'Supervisor 1', pendingTasks: 'Complete monthly report'
-    },
-    {
-      id: 2, name: 'Employee 2', role: 'Waiter', active: false, ordersToday: 3,
-      totalOrders: 50, experienceLevel: 'Intermediate', email: 'employee2@example.com', phone: '098-765-4321',
-      hireDate: '2019-03-20', shiftTiming: '10 AM - 6 PM', department: 'Service', achievements: 'Best Waiter Award',
-      supervisor: 'Supervisor 2', pendingTasks: 'Serve table 5'
-    },
-    {
-      id: 3, name: 'Employee 3', role: 'Chef', active: true, ordersToday: 7,
-      totalOrders: 200, experienceLevel: 'Master', email: 'employee3@example.com', phone: '456-123-7890',
-      hireDate: '2018-06-12', shiftTiming: '8 AM - 4 PM', department: 'Kitchen', achievements: 'Master Chef Award',
-      supervisor: 'Supervisor 3', pendingTasks: 'Prepare special menu'
-    },
-    {
-      id: 4, name: 'Employee 4', role: 'Barista', active: false, ordersToday: 2,
-      totalOrders: 30, experienceLevel: 'Beginner', email: 'employee4@example.com', phone: '321-654-9870',
-      hireDate: '2021-09-10', shiftTiming: '11 AM - 7 PM', department: 'Beverage', achievements: 'Best Newcomer',
-      supervisor: 'Supervisor 4', pendingTasks: 'Restock coffee beans'
-    },
-  ]);
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.auth.users);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  console.log(users);
+
   const [details, setDetails] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const toggleDetails = (id) => {
     setDetails(details.includes(id) ? details.filter(detailId => detailId !== id) : [...details, id]);
   };
 
   const handleDeleteClick = (id) => {
-    setSelectedEmployeeId(id);
+    setSelectedUserId(id);
     setOpenDialog(true);
   };
 
   const handleDeleteConfirm = () => {
-    setEmployees(employees.filter(employee => employee.id !== selectedEmployeeId));
     setOpenDialog(false);
   };
 
   const handleDeleteCancel = () => {
     setOpenDialog(false);
-    setSelectedEmployeeId(null);
+    setSelectedUserId(null);
   };
 
   return (
@@ -77,126 +58,78 @@ const Gererpersonnel = () => {
         </Button>
       </div>
       <Grid container spacing={2} justifyContent="center">
-        {employees.map((employee) => (
-          <Grid item xs={12} sm={4} key={employee.id}>
+        {users.map((user) => (
+          <Grid item xs={12} sm={4} key={user.id}>
             <Card sx={{ border: '2px solid #8B4513', height: '100%' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="h5" component="div">
-                    {employee.name}
+                    {user.nom} {user.prenom}
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: employee.active ? 'green' : 'red',
+                      backgroundColor: 'green',
                       color: 'white',
                       borderRadius: '5px',
-                      padding: '2px 8px'
+                      padding: '2px 8px',
                     }}
                   >
-                    {employee.active ? 'Active' : 'Inactive'}
+                    Online
                   </Box>
                 </Box>
-                <Typography variant="body2" color="textSecondary" align="center">
-                  Role: {employee.role}
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  Role: {user.role.name}
                 </Typography>
-                <Box display="flex" justifyContent="center" mt={2}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    width="200"
-                    image={employee.role === 'Manager' ? Serveuse : (employee.role === 'Waiter' ? Client : Personnel)}
-                    alt="Employee"
-                    style={{ margin: 'auto' }}
-                  />
-                </Box>
+                <Typography variant="body2">
+                  Email: {user.email}
+                </Typography>
+                <Typography variant="body2">
+                  Address: {user.address}
+                </Typography>
+                <Typography variant="body2">
+                  Phone: {user.numero}
+                </Typography>
               </CardContent>
-              <CardActions style={{ justifyContent: 'center' }}>
-                <Button
-                  onClick={() => toggleDetails(employee.id)}
-                  color="primary"
-                  sx={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px', marginRight: '5px' }}
-                >
-                  {details.includes(employee.id) ? 'Hide' : 'Details'}
+              <CardActions>
+                <Button size="small" onClick={() => toggleDetails(user.id)}>
+                  {details.includes(user.id) ? 'Hide Details' : 'Show Details'}
                 </Button>
                 <Button
-                  component={Link}
-                  to="/gest/updateperson"
-                  color="primary"
-                  sx={{ backgroundColor: '#FFA726', color: 'white', padding: '5px 10px', borderRadius: '5px', marginRight: '5px' }}
-                >
-                  Update
-                </Button>
-                <Button
-                  onClick={() => handleDeleteClick(employee.id)}
+                  size="small"
                   color="secondary"
-                  sx={{ backgroundColor: '#FF7043', color: 'white', padding: '5px 10px', borderRadius: '5px' }}
+                  onClick={() => handleDeleteClick(user.id)}
                 >
                   Delete
                 </Button>
               </CardActions>
-              <Collapse in={details.includes(employee.id)} timeout="auto" unmountOnExit>
+              <Collapse in={details.includes(user.id)} timeout="auto" unmountOnExit>
                 <CardContent>
-                  <Typography variant="body2" color="textSecondary">
-                    Employee ID: {employee.id}
+                  <Typography variant="body2">
+                    Additional Details:
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Email: {employee.email}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Phone: {employee.phone}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Hire Date: {employee.hireDate}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Shift Timing: {employee.shiftTiming}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Department: {employee.department}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Achievements: {employee.achievements}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Supervisor: {employee.supervisor}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Pending Tasks: {employee.pendingTasks}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Total Orders Today: {employee.ordersToday}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Total Orders This Month: {employee.totalOrders}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Experience Level: {employee.experienceLevel}
-                  </Typography>
+                  {/* Add any additional details you want to show */}
                 </CardContent>
               </Collapse>
             </Card>
           </Grid>
         ))}
       </Grid>
-
       <Dialog
         open={openDialog}
         onClose={handleDeleteCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogTitle>{"Confirm Deletion"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this employee?
+          <DialogContentText>
+            Are you sure you want to delete this user?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
-            OK
+          <Button onClick={handleDeleteConfirm} color="secondary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

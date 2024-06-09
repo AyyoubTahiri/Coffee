@@ -35,7 +35,7 @@ const Reservation = () => {
             });
             setOpenSuccess(true);
             setTimeout(() => {
-                navigate('/client/paiment');
+                navigate('/client/commande');
             }, 2000);  // Wait 2 seconds before navigating to the payment page
         }
     };

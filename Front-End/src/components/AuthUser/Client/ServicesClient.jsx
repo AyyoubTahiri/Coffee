@@ -1,6 +1,14 @@
 import React from 'react';
 import { Container, Card, CardContent, Typography, Grid } from '@mui/material';
 import { styled } from '@mui/system';
+import reserve from '../../../assets/website/reservepng.jpg';
+import emporter from '../../../assets/website/cafe-a-emporter.jpg';
+import livraison from '../../../assets/website/livraison.png';
+import waiter1 from '../../../assets/website/waiter1.png';
+import waiter2 from '../../../assets/website/waiter2.png';
+import chef1 from '../../../assets/website/chef.png';
+import chef2 from '../../../assets/website/chef2.png';
+import managerImg from '../../../assets/website/manager.png';
 
 const Root = styled(Container)(({ theme }) => ({
   marginTop: 20,
@@ -18,7 +26,7 @@ const CustomCard = styled(Card)(({ theme }) => ({
 }));
 
 const Media = styled('img')(({ theme }) => ({
-  height: 140,
+  height: 400, // Increase height to show full face
   backgroundSize: 'contain',
   width: '100%',
   objectFit: 'cover',
@@ -36,46 +44,46 @@ const services = [
   {
     title: 'Livraison de Café',
     description: 'Profitez de notre service de livraison pour déguster votre café préféré chez vous.',
-    imageUrl: 'https://example.com/livraison.jpg', // Replace with your image URL
+    imageUrl: livraison, // Using the provided image
   },
   {
     title: 'Café à Emporter',
     description: 'Passez prendre votre café à emporter et savourez-le où vous le souhaitez.',
-    imageUrl: 'https://example.com/emporter.jpg', // Replace with your image URL
+    imageUrl: emporter, // Using the provided image
   },
   {
-    title: 'reservation du table',
-    description: 'Trouvez notre café avec notre localisation pratique et profitez de notre ambiance chaleureuse.',
-    imageUrl: 'https://example.com/location.jpg', // Replace with your image URL
+    title: 'Réservation de Table',
+    description: 'Réservez une table à l\'avance pour profiter de notre ambiance chaleureuse.',
+    imageUrl: reserve, // Using the provided image
   },
 ];
 
 const manager = {
   title: 'Manager',
   name: 'John Doe',
-  imageUrl: 'https://example.com/manager.jpg', // Replace with your image URL
+  imageUrl: managerImg, // Using the provided image
 };
 
 const team = [
   {
     title: 'Chef de Cuisine',
     name: 'Jane Smith',
-    imageUrl: 'https://example.com/chef1.jpg', // Replace with your image URL
+    imageUrl: chef1, // Using the provided image
   },
   {
     title: 'Chef de Cuisine',
     name: 'Robert Brown',
-    imageUrl: 'https://example.com/chef2.jpg', // Replace with your image URL
+    imageUrl: chef2, // Using the provided image
   },
   {
     title: 'Serveur',
     name: 'Emily Davis',
-    imageUrl: 'https://example.com/waiter1.jpg', // Replace with your image URL
+    imageUrl: waiter1, // Using the provided image
   },
   {
     title: 'Serveur',
     name: 'Michael Wilson',
-    imageUrl: 'https://example.com/waiter2.jpg', // Replace with your image URL
+    imageUrl: waiter2, // Using the provided image
   },
 ];
 

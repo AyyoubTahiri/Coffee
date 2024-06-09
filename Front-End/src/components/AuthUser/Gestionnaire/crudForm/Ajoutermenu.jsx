@@ -1,33 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddProduits, getCategory, getIngredient } from '../../../Redux/authActions';
 
-const Ajoutermenu = () => {
-    const [formData, setFormData] = useState({ produit: '', description: '', date: '', prix: '', photo: null });
+const AjouterMenu = () => {
+    const [formData, setFormData] = useState({
+        nomProduit: '',
+        description: '',
+        Prix: '',
+        idCategorie: '',
+        ingredients: []
+    });
     const navigate = useNavigate();
+    const { categories, ingredients, loading } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getCategory());
+        dispatch(getIngredient());
+    }, [dispatch]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'prix') {
-            if (value === '' || (Number(value) > 0 && !value.startsWith('-'))) {
-                setFormData({ ...formData, [name]: value });
-            }
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
+        setFormData({ ...formData, [name]: value });
     };
 
-    const handlePhotoChange = (e) => {
-        setFormData({ ...formData, photo: e.target.files[0] });
+    const handleSelectChange = (e) => {
+        const { name, options } = e.target;
+        const value = Array.from(options).filter(option => option.selected).map(option => option.value);
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Submitted Data:', formData);
-        // Handle the submission, like sending data to an API or state management
+        dispatch(AddProduits(formData, () => {
+            setFormData({
+                nomProduit: '',
+                description: '',
+                Prix: '',
+                idCategorie: '',
+                ingredients: []
+            });
+            navigate('/gest/menu');
+        }));
     };
 
     const handleCancel = () => {
-        navigate('/gest/stock');
+        navigate('/gest/menu');
     };
 
     return (
@@ -49,8 +68,8 @@ const Ajoutermenu = () => {
                     <label style={{ display: 'block', marginBottom: '5px' }}>Produit:</label>
                     <input
                         type="text"
-                        name="produit"
-                        value={formData.produit}
+                        name="nomProduit"
+                        value={formData.nomProduit}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
@@ -58,46 +77,54 @@ const Ajoutermenu = () => {
                 </div>
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{ display: 'block', marginBottom: '5px' }}>Description:</label>
-                    <input
-                        type="text"
+                    <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
-                    />
+                    ></textarea>
                 </div>
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{ display: 'block', marginBottom: '5px' }}>Prix:</label>
                     <input
                         type="number"
-                        name="prix"
-                        value={formData.prix}
+                        name="Prix"
+                        value={formData.Prix}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Date:</label>
-                    <input
-                        type="date"
-                        name="date"
-                        value={formData.date}
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Categorie:</label>
+                    <select
+                        name="idCategorie"
+                        value={formData.idCategorie}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
-                    />
+                    >
+                        <option value="">Select a category</option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                        ))}
+                    </select>
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Photo:</label>
-                    <input
-                        type="file"
-                        name="photo"
-                        onChange={handlePhotoChange}
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Ingredients:</label>
+                    <select
+                        name="ingredients"
+                        multiple
+                        value={formData.ingredients}
+                        onChange={handleSelectChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-                        accept="image/*"
-                    />
+                        required
+                    >
+                        {ingredients.map(ingredient => (
+                            <option key={ingredient.id} value={ingredient.id}>{ingredient.name}</option>
+                        ))}
+                    </select>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <button
@@ -135,4 +162,4 @@ const Ajoutermenu = () => {
     );
 };
 
-export default Ajoutermenu;
+export default AjouterMenu;

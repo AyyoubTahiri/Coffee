@@ -5,7 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class typecommande extends Model
+class Typecommande extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'prix'];
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class, 'idTypeCommand');
+    }
 }

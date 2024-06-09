@@ -5,21 +5,24 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../Client/CartContext'; // Import the CartContext
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItemFromCart, updateItemQuantity } from '../../Redux/authActions';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cartItems, removeItemFromCart, updateItemQuantity } = useCart(); // Use CartContext
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.auth.cartItems);
 
   const handleQuantityChange = (index, newQuantity) => {
-    updateItemQuantity(index, newQuantity);
+    dispatch(updateItemQuantity(index, newQuantity));
   };
 
   const handleRemoveItem = (index) => {
-    removeItemFromCart(index);
+    dispatch(removeItemFromCart(index));
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+  // Calculate subtotal by summing the total for each item in the cart
+  const subtotal = cartItems.reduce((sum, item) => sum + (parseFloat(item.Prix) * item.quantity), 0);
 
   return (
     <Container maxWidth="md" style={{ marginTop: '20px' }}>
@@ -51,19 +54,17 @@ const CartPage = () => {
           <TableBody>
             {cartItems.map((item, index) => (
               <TableRow key={index}>
-                <TableCell><img src={item.image} alt={item.name} style={{ width: '50px' }} /></TableCell>
+                <TableCell><img src={item.image} alt={item.nomProduit} style={{ width: '50px' }} /></TableCell>
                 <TableCell>
-                  <Typography variant="subtitle1">{item.name}</Typography>
-                  {item.flavour && <Typography variant="body2">Flavour: {item.flavour}</Typography>}
-                  {item.weight && <Typography variant="body2">Weight: {item.weight}</Typography>}
+                  <Typography variant="subtitle1">{item.nomProduit}</Typography>
                 </TableCell>
-                <TableCell>{item.price.toFixed(2)} USD</TableCell>
+                <TableCell>{parseFloat(item.Prix).toFixed(2)} USD</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleQuantityChange(index, item.quantity - 1)} disabled={item.quantity === 1}>-</IconButton>
                   {item.quantity}
                   <IconButton onClick={() => handleQuantityChange(index, item.quantity + 1)}>+</IconButton>
                 </TableCell>
-                <TableCell>{item.total.toFixed(2)} USD</TableCell>
+                <TableCell>{(parseFloat(item.Prix) * item.quantity).toFixed(2)} USD</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleRemoveItem(index)}>
                     <DeleteIcon />

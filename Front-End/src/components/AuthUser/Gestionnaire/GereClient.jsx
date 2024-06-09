@@ -1,47 +1,42 @@
 import { CAvatar, CBadge, CButton, CCardBody, CCollapse, CSmartTable } from '@coreui/react-pro';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import PeopleIcon from '@mui/icons-material/People';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduits } from '../../Redux/authActions';
+import { getUsers } from '../../Redux/authActions';
 
-const GestionMenu = () => {
+const GereClient = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { produits, loading } = useSelector((state) => state.auth);
+  const { users, loading } = useSelector((state) => state.auth);
   const [details, setDetails] = useState([]);
-  console.log(produits);
+
   useEffect(() => {
-    dispatch(getProduits());
+    dispatch(getUsers());
   }, [dispatch]);
 
   const columns = [
     {
-      key: 'nomProduit',
-      label: 'Produit',
+      key: 'name',
+      label: 'Name',
       _style: { width: '20%' },
     },
     {
-      key: 'categorie',
-      label: 'Categorie',
+      key: 'email',
+      label: 'Email',
+      _style: { width: '25%' },
+    },
+    {
+      key: 'orders',
+      label: 'Number of Orders',
       _style: { width: '20%' },
     },
     {
-      key: 'ingredients',
-      label: 'Ingredients',
-      _style: { width: '20%' },
-    },
-    {
-      key: 'description',
-      label: 'Description',
-      _style: { width: '20%' },
-    },
-    {
-      key: 'Prix',
-      label: 'Prix',
-      _style: { width: '10%' },
+      key: 'totalPrice',
+      label: 'Total Price of Orders',
+      _style: { width: '25%' },
     },
     {
       key: 'show_details',
@@ -52,8 +47,8 @@ const GestionMenu = () => {
     },
   ];
 
-  const getBadge = (prix) => {
-    switch (prix) {
+  const getBadge = (status) => {
+    switch (status) {
       case 'Active':
         return 'success';
       case 'Inactive':
@@ -82,19 +77,21 @@ const GestionMenu = () => {
     return <div>Loading...</div>;
   }
 
+  const filteredUsers = Array.isArray(users) ? users.filter(user => user.idRole === 3) : [];
+
   return (
     <Box bgcolor="#f0f0f0" p={2}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
         <div style={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
-          <RestaurantMenuIcon style={{ fill: 'white', marginRight: '5px' }} />
-          Menu
+          <PeopleIcon style={{ fill: 'white', marginRight: '5px' }} />
+          Clients
         </div>
         <CButton
           color="primary"
           variant="outlined"
           style={{ borderColor: '#795548', color: '#795548', transition: 'color 0.3s, background-color 0.3s' }}
           className="hover-effect"
-          onClick={() => navigate('/gest/ajoutermenu')}
+          onClick={() => navigate('/gest/ajouterclient')}
           startIcon={<AddIcon />}
         >
           Ajouter
@@ -109,7 +106,7 @@ const GestionMenu = () => {
         columnFilter
         columnSorter
         footer
-        items={produits}
+        items={filteredUsers}
         itemsPerPageSelect
         itemsPerPage={5}
         pagination
@@ -120,14 +117,10 @@ const GestionMenu = () => {
           console.log(items);
         }}
         scopedColumns={{
-          nomProduit: (item) => <td>{item.nomProduit}</td>,
-          categorie: (item) => <td>{item.categorie ? item.categorie.name : 'N/A'}</td>,
-          ingredients: (item) => <td>{item.ingredients ? item.ingredients.map(ing => ing.name).join(', ') : 'N/A'}</td>,
-          Prix: (item) => (
-            <td>
-              <CBadge color={getBadge(item.Prix)}>{item.Prix}</CBadge>
-            </td>
-          ),
+          name: (item) => <td>{item.nom} {item.prenom}</td>,
+          email: (item) => <td>{item.email}</td>,
+          orders: (item) => <td>{item.numberOfOrders}</td>,
+          totalPrice: (item) => <td>{item.totalOrders}</td>,
           show_details: (item) => {
             return (
               <td className="py-2">
@@ -149,11 +142,10 @@ const GestionMenu = () => {
             return (
               <CCollapse visible={details.includes(item.id)}>
                 <CCardBody className="p-3">
-                  <h4>{item.nomProduit}</h4>
-                  <p className="text-muted">Category: {item.categorie ? item.categorie.name : 'N/A'}</p>
-                  <p className="text-muted">Ingredients: {item.ingredients ? item.ingredients.map(ing => ing.name).join(', ') : 'N/A'}</p>
-                  <p className="text-muted">Description: {item.description}</p>
-                  <p className="text-muted">Price: {item.Prix}</p>
+                  <h4>{item.nom} {item.prenom}</h4>
+                  <p className="text-muted">Email: {item.email}</p>
+                  <p className="text-muted">Number of Orders: {item.numberOfOrders}</p>
+                  <p className="text-muted">Total Price of Orders: {item.totalOrders}</p>
                   <CButton size="sm" color="primary">
                     Update
                   </CButton>
@@ -166,7 +158,7 @@ const GestionMenu = () => {
           },
         }}
         selectable
-        sorterValue={{ column: 'Prix', state: 'asc' }}
+        sorterValue={{ column: 'totalPrice', state: 'asc' }}
         tableFilter
         tableProps={{
           style: { borderCollapse: 'collapse', borderRadius: '5px' },
@@ -186,4 +178,4 @@ const GestionMenu = () => {
   );
 }
 
-export default GestionMenu;
+export default GereClient;

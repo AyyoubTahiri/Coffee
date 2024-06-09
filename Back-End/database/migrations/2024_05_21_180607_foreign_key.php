@@ -8,7 +8,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   
+
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
@@ -28,12 +28,15 @@ return new class extends Migration
         });
 
         Schema::table('produits', function (Blueprint $table) {
-            $table->foreign('idIngrediant')->references('id')->on('stocks')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('idCategorie')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+        });
+        Schema::table('produit_ingredient', function (Blueprint $table) {
+            $table->foreign('produit_id')->references('id')->on('produits')->onDelete('cascade');
+            $table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
         });
 
         Schema::table('stocks', function (Blueprint $table) {
-            $table->foreign('idIngredient')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idIngredient')->references('id')->on('ingredients')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::table('jaims', function (Blueprint $table) {

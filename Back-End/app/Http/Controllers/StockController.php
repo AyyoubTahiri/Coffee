@@ -11,13 +11,29 @@ use Illuminate\Http\Request;
 class StockController extends Controller
 {
     public function index()
+{
+    $stocks = stock::with('ingredient')->get();
+    return response()->json($stocks);
+}
+    public function store(Request $request)
     {
-        return StockResource::collection(Stock::with('ingredient')->get());
-    }
-    public function store(StoreStockRequest $request)
-    {
-        $stock = Stock::create($request->validated());
-        return new StockResource($stock);
+        $request->validate([
+            'idIngredient' => 'required|exists:ingredients,id',
+            'quantite' => 'required|integer',
+            'dateEntre' => 'required|date',
+            'dateExpires' => 'required|date',
+            'prixTotale' => 'required|numeric',
+        ]);
+
+        $stock = new stock();
+        $stock->idIngredient = $request->idIngredient;
+        $stock->quantite = $request->quantite;
+        $stock->dateEntre = $request->dateEntre;
+        $stock->dateExpires = $request->dateExpires;
+        $stock->prixTotale = $request->prixTotale;
+        $stock->save();
+
+        return response()->json(['message' => 'Stock added successfully'], 201);
     }
 
     public function show(Stock $stock)

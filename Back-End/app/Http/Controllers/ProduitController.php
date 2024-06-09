@@ -11,15 +11,38 @@ use Illuminate\Http\Request;
 class ProduitController extends Controller
 {
     //{
-    public function index()
-    {
-        return ProduitResource::collection(produit::with(['ingredient', 'categorie'])->get());
-    }
+        public function index()
+{
+    $produits = Produit::with(['categorie', 'ingredients'])->get();
+    return response()->json($produits);
+}
 
-    public function store(StoreProduitRequest $request)
+    public function store(Request $request)
     {
-        $produit = Produit::create($request->validated());
-        return new ProduitResource($produit);
+        $validatedData = $request->validate([
+            'nomProduit' => 'required|string|max:255',
+            'Prix' => 'required|numeric',
+            'description' => 'nullable|string',
+            'idCategorie' => 'required|exists:categories,id',
+            'ingredients' => 'required|array',
+            'ingredients.*' => 'exists:ingredients,id',
+        ]);
+
+        // Create the produit
+        $produit = Produit::create([
+            'nomProduit' => $validatedData['nomProduit'],
+            'Prix' => $validatedData['Prix'],
+            'description' => $validatedData['description'],
+            'idCategorie' => $validatedData['idCategorie'],
+        ]);
+
+        // Attach ingredients to the produit
+        $produit->ingredients()->attach($validatedData['ingredients']);
+
+        return response()->json([
+            'message' => 'Produit created successfully.',
+            'produit' => $produit
+        ], 201);
     }
 
     public function show(Produit $produit)

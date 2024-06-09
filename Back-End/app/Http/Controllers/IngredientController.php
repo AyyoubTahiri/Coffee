@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Requests\UpdateIngredientRequest;
 use App\Http\Resources\IngredientResource;
-use App\Models\ingredient;
+use App\Models\Ingredient;
 use Illuminate\Http\Request;
 
 class IngredientController extends Controller
 {
     //{
-    public function index()
-    {
-        return IngredientResource::collection(ingredient::all());
-    }
+        public function index()
+        {
+            $ingredients = Ingredient::all();
+            return response()->json($ingredients);
+        }
 
     public function store(StoreIngredientRequest $request)
     {

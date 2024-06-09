@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('date');
             $table->string('Prixtotal');
             $table->timestamps();
+
+
         });
     }
 

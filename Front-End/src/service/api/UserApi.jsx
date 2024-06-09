@@ -12,42 +12,47 @@ const UserApi = {
         return await axiosClient.post('/register', Data)
     },
 
-    getUsers: async () => {
+    getusers: async () => {
         return await axiosClient.get('/get-users')
     },
-    getLevels: async () => {
-      return await axiosClient.get('/get-levels')
+    getIngredi: async () => {
+      return await axiosClient.get('/get-ingredient')
     },
-    getRoles: async () => {
-      return await axiosClient.get('/get-roles')
+    addstock: async (stock) => {
+      return await axiosClient.post('/add-stocks',stock)
     },
-    getCategory: async () => {
+    getstock: async () => {
+      return await axiosClient.get('/get-stocks')
+    },
+    getcategorie: async () => {
       return await axiosClient.get('/get-categories')
     },
-    getTutorials: async () => {
-      return await axiosClient.get('/get-tutorials')
-    },
     
-  
-    Add_User: async (UserData) => {
+    getproduit: async () => {
+      return await axiosClient.get('/get-produits')
+  },
+  createOrder:async(order)=>{
+    return await axiosClient.post('/orders',order)
+
+  },
+  getTypePaiements: async () => {
+    return await axiosClient.get('/type-paiements')
+},
+getTypeCommandes: async () => {
+  return await axiosClient.get('/type-commandes')
+},
+    
+    getroles: async () => {
+      return await axiosClient.get('/get-roles')
+  },
+    addproduit: async (UserData) => {
       // Create FormData instance
-      
-  
-      return axiosClient.post('/add-user', UserData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      return axiosClient.post('/add-produits', UserData);
     },
   
-    addTutorial : async (formData) => {
+    addusers: async (formData) => {
     
-          return  await axiosClient.post(`/add-tutorial`, formData, {
-              headers: {
-                  
-                  'Content-Type': 'multipart/form-data',
-              },
-          });
+          return  await axiosClient.post(`/add-users`, formData);
   },
   
   
@@ -61,4 +66,4 @@ const UserApi = {
     });
   },
 }
-export default UserApi
+export default UserApi;

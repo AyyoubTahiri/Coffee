@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddUseres, getRoles } from '../../../Redux/authActions';
 
-const Ajouterperson = ({ onAddEmployee }) => {
+const AjouterClient = ({ onAddEmployee }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const roles = useSelector((state) => state.auth.roles);
@@ -14,7 +14,7 @@ const Ajouterperson = ({ onAddEmployee }) => {
         prenom: '',
         email: '',
         password: '',
-        idRole: '',
+        idRole: 3,
         address: '',
         numero: ''
     });
@@ -35,7 +35,7 @@ const Ajouterperson = ({ onAddEmployee }) => {
         const { nom, prenom, email, password, idRole, address, numero } = formValues;
         if (nom && prenom && email && password && idRole && address && numero) {
             dispatch(AddUseres(formValues, () => {
-                navigate('/gest/gererperson');
+                navigate('/gest/gererclient');
             }));
         } else {
             alert("Veuillez remplir tous les champs.");
@@ -44,9 +44,9 @@ const Ajouterperson = ({ onAddEmployee }) => {
 
     return (
         <Box>
-            <Typography variant="h4" gutterBottom>Ajouter Personne</Typography>
+            <Typography variant="h4" gutterBottom>Ajouter Client</Typography>
             <Typography variant="body1" gutterBottom>
-                Veuillez remplir les informations ci-dessous pour ajouter une personne :
+                Veuillez remplir les informations ci-dessous pour ajouter une client :
             </Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -116,24 +116,7 @@ const Ajouterperson = ({ onAddEmployee }) => {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        select
-                        fullWidth
-                        name="idRole"
-                        label="Choisir un rôle"
-                        variant="outlined"
-                        margin="normal"
-                        value={formValues.idRole}
-                        onChange={handleInputChange}
-                    >
-                        {roles.map((role) => (
-                            <MenuItem key={role.id} value={role.id}>
-                                {role.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </Grid>
+                
                 <Grid item xs={6}>
                     <Button
                         variant="contained"
@@ -157,4 +140,4 @@ const Ajouterperson = ({ onAddEmployee }) => {
     );
 };
 
-export default Ajouterperson;
+export default AjouterClient;

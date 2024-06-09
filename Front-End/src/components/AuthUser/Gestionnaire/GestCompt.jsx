@@ -44,28 +44,7 @@ const GestionCompt = () => {
             </CardActions>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card sx={{ border: '2px solid #8B4513' }}>
-            <CardContent>
-              <Typography variant="h5" component="div" align="center">
-                Gérer les Serveurs
-              </Typography>
-              <Box display="flex" justifyContent="center">
-                <CardMedia
-                  component="img"
-                  image={Serveuse}
-                  alt="Gérer les Serveurs"
-                  sx={{ width: '100%', height: 200, objectFit: 'cover' }}
-                />
-              </Box>
-            </CardContent>
-            <CardActions style={{ justifyContent: 'center' }}>
-              <Button component={Link} to="/gerer-personnel" color="primary" sx={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
-                Gerer
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
+       
         <Grid item xs={12} sm={4}>
           <Card sx={{ border: '2px solid #8B4513' }}>
             <CardContent>
@@ -82,7 +61,7 @@ const GestionCompt = () => {
               </Box>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>
-              <Button component={Link} to="/gerer-personnel" color="primary" sx={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
+              <Button component={Link} onClick={() => navigate('/gest/gererclient')}color="primary" sx={{ backgroundColor: '#795548', color: 'white', padding: '5px 10px', borderRadius: '5px' }}>
                 Gerer
               </Button>
             </CardActions>

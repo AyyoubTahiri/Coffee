@@ -1,179 +1,190 @@
 import React from 'react';
-import { Container, Grid, Typography, Card, CardContent, CardActions, Button, TextField, MenuItem, Select, FormControl, InputLabel, Box } from '@mui/material';
+import { Container, Typography, Box, Grid, Card, CardContent, CardMedia, Button, Badge } from '@mui/material';
+import { styled } from '@mui/system';
+import cafeImage from '../../../assets/backCafe.png'; // Replace with the actual path to your image
+import coffeeImage from '../../../assets/backCafe.png'; // Replace with the actual path to your image
+import dessertImage from '../../../assets/backCafe.png'; // Replace with the actual path to your image
+import waiter1 from '../../../assets/website/waiter1.png';
+import waiter2 from '../../../assets/website/waiter2.png';
+import chef1 from '../../../assets/website/chef.png';
+import chef2 from '../../../assets/website/chef2.png';
+import { useSelector } from 'react-redux'; // Assuming you're using Redux for user state
 
-const HomeClient = ({ client }) => {
-  const [persons, setPersons] = React.useState('');
-  const [date, setDate] = React.useState('');
-  const [time, setTime] = React.useState('');
+const StyledContainer = styled(Container)(({ theme }) => ({
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(4),
+}));
 
-  const handlePersonsChange = (event) => {
-    setPersons(event.target.value);
-  };
+const Banner = styled(Box)(({ theme }) => ({
+  backgroundImage: `url(${cafeImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  height: '400px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+  textAlign: 'center',
+  padding: theme.spacing(2),
+}));
 
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
-  };
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  margin: theme.spacing(4, 0, 2),
+  fontWeight: 'bold',
+  textAlign: 'center',
+}));
 
-  const handleTimeChange = (event) => {
-    setTime(event.target.value);
-  };
+const FeaturedCard = styled(Card)(({ theme }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '500px', // Ensure consistent height for Featured Cards
+}));
 
-  // Providing default values if client is undefined or properties are missing
-  const name = client?.name || 'Guest';
-  const loyaltyPoints = client?.loyaltyPoints || 0;
-  const recentOrders = client?.recentOrders || [];
-  const upcomingReservations = client?.upcomingReservations || [];
-  const featuredItems = client?.featuredItems || [];
+const FeaturedCardMedia = styled(CardMedia)(({ theme }) => ({
+  height: '70%', // Adjust this value to fit the content appropriately
+  backgroundSize: 'contain',
+  width: '100%',
+  objectFit: 'cover',
+}));
+
+const FeaturedCardContent = styled(CardContent)(({ theme }) => ({
+  flexGrow: 1,
+}));
+
+const ClientInfoCard = styled(Card)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+}));
+
+const EmployeeCard = ({ name, role, status, imageUrl }) => (
+  <Grid item xs={12} sm={6} md={3}>
+    <Card sx={{ height: '500px' }}>
+      <CardMedia
+        component="img"
+        height="80%" // Adjust this value to fit the content appropriately
+        image={imageUrl}
+        alt={name}
+        sx={{ objectFit: 'cover' }}
+      />
+      <CardContent>
+        <Typography variant="h6">{name}</Typography>
+        <Typography color="textSecondary">{role}</Typography>
+        <Badge
+          badgeContent={status}
+          color={status === 'Active' ? 'success' : 'error'}
+          sx={{ mt: 1 }}
+        />
+      </CardContent>
+    </Card>
+  </Grid>
+);
+
+const Home = () => {
+  const user = useSelector((state) => state.auth.user); // Replace with your user state selector
+  const orders = useSelector((state) => state.orders?.list || []); // Replace with your orders state selector
+
+  const totalOrders = orders.length;
+  const favoriteItem = 'Cappuccino'; // Replace with logic to determine the favorite item
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: '20px' }}>
-      <Typography variant="h4" gutterBottom>
-        Welcome back, {name}!
-      </Typography>
+    <StyledContainer maxWidth="lg">
+      <Banner>
+        <Typography variant="h2" component="h1">
+          Welcome to Our Café
+        </Typography>
+      </Banner>
       
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={8}>
-          <iframe
-            title="map"
-            width="100%"
-            height="450"
-            frameBorder="0"
-            style={{ border: 0 }}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.9980177077787!2d-74.00871228463238!3d40.7139489793316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a198b654f39%3A0x5a2e7ab653409fd9!2s41%20Park%20Row%2C%20New%20York%2C%20NY%2010008%2C%20USA!5e0!3m2!1sen!2s!4v1594366795361!5m2!1sen!2s"
-            allowFullScreen
-          ></iframe>
+      <Box mt={4} mb={4} textAlign="center">
+        <Typography variant="h4">
+          Welcome, {user?.name || 'Guest'}!
+        </Typography>
+      </Box>
+
+      <ClientInfoCard>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            Your Activity
+          </Typography>
+          <Typography variant="body1">
+            You have made {totalOrders} orders with us.
+          </Typography>
+          <Typography variant="body1">
+            Your favorite item is: {favoriteItem}.
+          </Typography>
+        </CardContent>
+      </ClientInfoCard>
+      
+      <SectionTitle variant="h4">Featured Items</SectionTitle>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={6} md={4}>
+          <FeaturedCard>
+            <FeaturedCardMedia image={coffeeImage} title="Coffee" />
+            <FeaturedCardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Coffee
+              </Typography>
+              <Typography>
+                Enjoy our freshly brewed coffee made from the finest beans.
+              </Typography>
+            </FeaturedCardContent>
+          </FeaturedCard>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Box component="form" noValidate autoComplete="off" style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-            <Typography variant="h6" gutterBottom>
-              #Reservation
-            </Typography>
-            <Typography variant="h4" gutterBottom>
-              BOOK A TABLE
-            </Typography>
-            <TextField fullWidth label="Your Email" margin="normal" variant="outlined" />
-            <FormControl fullWidth margin="normal" variant="outlined">
-              <InputLabel id="persons-select-label">Persons</InputLabel>
-              <Select
-                labelId="persons-select-label"
-                value={persons}
-                onChange={handlePersonsChange}
-                label="Persons"
-              >
-                {[...Array(10)].map((_, i) => (
-                  <MenuItem key={i} value={i + 1}>{i + 1}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              fullWidth
-              label="Date"
-              type="date"
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={date}
-              onChange={handleDateChange}
-            />
-            <TextField
-              fullWidth
-              label="Time"
-              type="time"
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={time}
-              onChange={handleTimeChange}
-            />
-            <TextField fullWidth label="Your Message" margin="normal" variant="outlined" multiline rows={4} />
-            <Button variant="contained" color="primary" fullWidth style={{ marginTop: '20px' }}>
-              BOOK A TABLE
-            </Button>
-          </Box>
+        <Grid item xs={12} sm={6} md={4}>
+          <FeaturedCard>
+            <FeaturedCardMedia image={dessertImage} title="Dessert" />
+            <FeaturedCardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Dessert
+              </Typography>
+              <Typography>
+                Indulge in our delicious desserts, perfect for any sweet tooth.
+              </Typography>
+            </FeaturedCardContent>
+          </FeaturedCard>
         </Grid>
       </Grid>
 
-      <Typography variant="h4" style={{ marginTop: '40px' }} gutterBottom>
-        Your Dashboard
+      <SectionTitle variant="h4">Our Staff</SectionTitle>
+      <Grid container spacing={4}>
+        <EmployeeCard name="John Doe" role="Waiter" status="Active" imageUrl={waiter1} />
+        <EmployeeCard name="Jane Smith" role="Waiter" status="Inactive" imageUrl={waiter2} />
+        <EmployeeCard name="Robert Johnson" role="Chef" status="Active" imageUrl={chef1} />
+        <EmployeeCard name="Emily Davis" role="Chef" status="Inactive" imageUrl={chef2} />
+      </Grid>
+
+      <SectionTitle variant="h4">Our Services</SectionTitle>
+      <Typography paragraph>
+        We offer a variety of services to ensure you have a wonderful experience at our café. From free Wi-Fi to a cozy reading corner, we have something for everyone.
+      </Typography>
+      <Typography paragraph>
+        <strong>Free Wi-Fi:</strong> Stay connected while enjoying your favorite coffee.
+      </Typography>
+      <Typography paragraph>
+        <strong>Reading Corner:</strong> Relax with a book in our cozy reading nook.
+      </Typography>
+      <Typography paragraph>
+        <strong>Outdoor Seating:</strong> Enjoy the fresh air in our outdoor seating area.
+      </Typography>
+
+      <SectionTitle variant="h4">Contact Us</SectionTitle>
+      <Typography paragraph>
+        <strong>Address:</strong> 123 Café Street, Coffee City, CC 12345
+      </Typography>
+      <Typography paragraph>
+        <strong>Phone:</strong> (123) 456-7890
+      </Typography>
+      <Typography paragraph>
+        <strong>Email:</strong> contact@ourcafe.com
       </Typography>
       
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5">Your Loyalty Points</Typography>
-              <Typography variant="h6">{loyaltyPoints} Points</Typography>
-              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
-                Redeem Rewards
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5">Recent Orders</Typography>
-              {recentOrders.length > 0 ? (
-                recentOrders.map((order, index) => (
-                  <Typography key={index} variant="body1">
-                    {order}
-                  </Typography>
-                ))
-              ) : (
-                <Typography variant="body1">No recent orders</Typography>
-              )}
-              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
-                View All Orders
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5">Upcoming Reservations</Typography>
-              {upcomingReservations.length > 0 ? (
-                upcomingReservations.map((reservation, index) => (
-                  <Typography key={index} variant="body1">
-                    {reservation.date} at {reservation.time}
-                  </Typography>
-                ))
-              ) : (
-                <Typography variant="body1">No upcoming reservations</Typography>
-              )}
-              <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
-                Make a Reservation
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      
-      <Typography variant="h4" style={{ marginTop: '40px' }} gutterBottom>
-        Featured Items
-      </Typography>
-      <Grid container spacing={4}>
-        {featuredItems.length > 0 ? (
-          featuredItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">{item.name}</Typography>
-                  <Typography variant="body2">{item.description}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <Typography variant="body1">No featured items available</Typography>
-        )}
-      </Grid>
-    </Container>
+      <Box textAlign="center" mt={4}>
+        <Button variant="contained" color="primary" href="/contact">
+          Get in Touch
+        </Button>
+      </Box>
+    </StyledContainer>
   );
 };
 
-export default HomeClient;
+export default Home;

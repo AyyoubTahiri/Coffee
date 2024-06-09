@@ -5,6 +5,7 @@ import EmporteIcon from '@mui/icons-material/LocalMall';
 import LivraisonIcon from '@mui/icons-material/LocalShipping';
 import ReservationIcon from '@mui/icons-material/Restaurant';
 import { useNavigate } from 'react-router-dom';
+
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: '#f4e1d2',
   borderRadius: '10px',
@@ -24,7 +25,14 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const OrderMethodPage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const handleOrderTypeSelection = (orderType) => {
+    
+    localStorage.setItem('selectedOrderType', orderType); // Store selected order type in localStorage
+    navigate('/client/commande');
+  };
+
   return (
     <Container maxWidth="md" sx={{ marginTop: 4 }}>
       <Typography variant="h4" gutterBottom align="center" color="#6d4c41">
@@ -46,7 +54,9 @@ const OrderMethodPage = () => {
               </Typography>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>
-              <StyledButton variant="contained" onClick={() => navigate('/client/paiment')}>Choose Emporte</StyledButton>
+              <StyledButton variant="contained" onClick={() => handleOrderTypeSelection(1)}> {/* Replace 1 with the actual ID for Emporte */}
+                Choose Emporte
+              </StyledButton>
             </CardActions>
           </StyledCard>
         </Grid>
@@ -65,7 +75,9 @@ const OrderMethodPage = () => {
               </Typography>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>
-              <StyledButton variant="contained" onClick={() => navigate('/client/paiment')}>Choose Livraison</StyledButton>
+              <StyledButton variant="contained" onClick={() => handleOrderTypeSelection(2)}> {/* Replace 2 with the actual ID for Livraison */}
+                Choose Livraison
+              </StyledButton>
             </CardActions>
           </StyledCard>
         </Grid>
@@ -77,14 +89,16 @@ const OrderMethodPage = () => {
                 <ReservationIcon style={{ fontSize: 50, color: '#6d4c41' }} />
               </Box>
               <Typography variant="h5" align="center" color="#6d4c41">
-                Reservation de Table
+                Réservation
               </Typography>
               <Typography variant="body2" color="textSecondary" align="center">
-                Reserve a table at our cafe.
+                Reserve a table at our café.
               </Typography>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>
-              <StyledButton variant="contained"  onClick={() => navigate('/client/reserv')}>Choose Reservation</StyledButton>
+              <StyledButton variant="contained" onClick={() => navigate('/client/reserv')}> {/* Replace 3 with the actual ID for Réservation */}
+                Choose Réservation
+              </StyledButton>
             </CardActions>
           </StyledCard>
         </Grid>

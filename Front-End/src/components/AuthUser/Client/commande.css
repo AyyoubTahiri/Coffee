@@ -1,0 +1,55 @@
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0 10%;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.progress-step::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 4px; /* Adjust this value to make the line larger */
+    background: #00a5ff;
+    z-index: -1;
+}
+
+.progress-step:not(:first-child)::before {
+    left: -50%;
+}
+
+.progress-step:not(:last-child)::before {
+    right: -50%;
+}
+
+.progress-icon {
+    background: #00a5ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.progress-step p {
+    margin-top: 10px;
+    color: #00a5ff;
+}
+
+.progress-icon span {
+    font-size: 24px;
+}

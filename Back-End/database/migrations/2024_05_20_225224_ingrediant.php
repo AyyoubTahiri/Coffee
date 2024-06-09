@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ingredient', function (Blueprint $table) {
+        Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
-            $table->string('Prix');
+            $table->string('name');
+            $table->decimal('prix', 8, 2);
             $table->timestamps();
         });
     }

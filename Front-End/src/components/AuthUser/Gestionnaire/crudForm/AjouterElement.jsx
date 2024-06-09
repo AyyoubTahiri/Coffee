@@ -1,29 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddStocks, getIngredient } from '../../../Redux/authActions';
 
 const AjouterElement = () => {
-    const [formData, setFormData] = useState({ element: '', quantite: '', date: '', prix: '', photo: null });
+    const [formData, setFormData] = useState({ element: '', quantite: '', dateEntre: '', dateExpires: '', prixTotale: '' });
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { ingredients, loading } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        dispatch(getIngredient());
+    }, [dispatch]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'prix') {
-            if (value === '' || (Number(value) > 0 && !value.startsWith('-'))) {
-                setFormData({ ...formData, [name]: value });
-            }
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
-    };
+        setFormData(prevState => {
+            const newFormData = { ...prevState, [name]: value };
 
-    const handlePhotoChange = (e) => {
-        setFormData({ ...formData, photo: e.target.files[0] });
+            if (name === 'element' || (name === 'quantite' && prevState.element)) {
+                const selectedIngredient = ingredients.find(ingredient => ingredient.id === parseInt(newFormData.element));
+                if (selectedIngredient) {
+                    newFormData.prixTotale = selectedIngredient.prix * newFormData.quantite;
+                }
+            }
+
+            return newFormData;
+        });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Submitted Data:', formData);
-        // Handle the submission, like sending data to an API or state management
+        const stockData = {
+            idIngredient: parseInt(formData.element),
+            quantite: parseInt(formData.quantite),
+            dateEntre: formData.dateEntre,
+            dateExpires: formData.dateExpires,
+            prixTotale: parseFloat(formData.prixTotale)
+        };
+        dispatch(AddStocks(stockData, () => {
+            setFormData({ element: '', quantite: '', dateEntre: '', dateExpires: '', prixTotale: '' });
+            navigate('/gest/stock');
+        }));
     };
 
     const handleCancel = () => {
@@ -47,14 +65,20 @@ const AjouterElement = () => {
                 <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Add New Element</h1>
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{ display: 'block', marginBottom: '5px' }}>Élément:</label>
-                    <input
-                        type="text"
+                    <select
                         name="element"
                         value={formData.element}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
-                    />
+                    >
+                        <option value="">Select an ingredient</option>
+                        {ingredients.map((ingredient) => (
+                            <option key={ingredient.id} value={ingredient.id}>
+                                {ingredient.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{ display: 'block', marginBottom: '5px' }}>Quantité:</label>
@@ -68,35 +92,35 @@ const AjouterElement = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Prix:</label>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Prix Total:</label>
                     <input
                         type="number"
-                        name="prix"
-                        value={formData.prix}
-                        onChange={handleInputChange}
+                        name="prixTotale"
+                        value={formData.prixTotale}
+                        readOnly
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-                        required
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Date:</label>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Date d'Entrée:</label>
                     <input
                         type="date"
-                        name="date"
-                        value={formData.date}
+                        name="dateEntre"
+                        value={formData.dateEntre}
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                         required
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>Photo:</label>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Date d'Expiration:</label>
                     <input
-                        type="file"
-                        name="photo"
-                        onChange={handlePhotoChange}
+                        type="date"
+                        name="dateExpires"
+                        value={formData.dateExpires}
+                        onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
-                        accept="image/*"
+                        required
                     />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>

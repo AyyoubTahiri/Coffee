@@ -1,110 +1,33 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  Container, Typography, Grid, CardActions, Button, IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Alert, MenuItem, Select, FormControl, InputLabel
+  Container, Typography, Grid, CardActions, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Alert, MenuItem, Select, FormControl, InputLabel
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from './CartContext'; // Import the CartContext
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import cafee from '../../../assets/grandBack.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduits, getCategory, addToCart } from '../../Redux/authActions';
+import photo from '../../../assets/website/coffee_logo.png';
 
 // Styled components
 const StyledAlert = styled(Alert)(({ theme }) => ({
   position: 'fixed',
-  top: theme.spacing(8),
+  top: theme.spacing(12),
   right: theme.spacing(2),
   zIndex: 1500,
   width: '300px',
   maxHeight: '400px',
   overflowY: 'auto',
+  backgroundColor: '#333', // Background color for the alert
+  color: '#fff', // Text color
+  borderRadius: '10px', // Border radius
+  padding: '10px', // Padding
+  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', // Box shadow
 }));
-
-const cardWrapStyles = {
-  margin: '10px',
-  transform: 'perspective(800px)',
-  transformStyle: 'preserve-3d',
-  cursor: 'pointer',
-};
-
-const cardStyles = {
-  position: 'relative',
-  flex: '0 0 240px',
-  width: '240px',
-  height: '320px',
-  backgroundColor: '#333',
-  overflow: 'hidden',
-  borderRadius: '10px',
-  boxShadow: 'rgba(0, 0, 0, 0.66) 0 30px 60px 0, inset #333 0 0 0 5px, inset rgba(255, 255, 255, 0.5) 0 0 0 6px',
-  transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-};
-
-const cardBgStyles = {
-  opacity: '0.5',
-  position: 'absolute',
-  top: '-20px',
-  left: '-20px',
-  width: '100%',
-  height: '100%',
-  padding: '20px',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-  pointerEvents: 'none',
-};
-
-const cardInfoStyles = {
-  padding: '20px',
-  position: 'absolute',
-  bottom: '0',
-  color: '#fff',
-  transform: 'translateY(40%)',
-  transition: '0.6s cubic-bezier(0.215, 0.61, 0.355, 1)',
-};
-
-const cardInfoAfterStyles = {
-  content: '""',
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  zIndex: '0',
-  width: '100%',
-  height: '100%',
-  backgroundImage: 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.6) 100%)',
-  backgroundBlendMode: 'overlay',
-  opacity: '0',
-  transform: 'translateY(100%)',
-  transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-};
-
-const cardInfoH1Styles = {
-  fontFamily: '"Playfair Display", serif',
-  fontSize: '36px',
-  fontWeight: '700',
-  textShadow: 'rgba(0, 0, 0, 0.5) 0 10px 10px',
-};
-
-const cardInfoPStyles = {
-  opacity: '0',
-  textShadow: 'rgba(0, 0, 0, 1) 0 2px 3px',
-  transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-};
-
-const coffeeTypes = [
-  { name: 'Espresso', description: 'Strong black coffee', category: 'coffee', price: 5.00, comments: [], likes: 0, image: cafee },
-  { name: 'Cappuccino', description: 'Espresso mixed with steamed milk foam', category: 'coffee', price: 6.00, comments: [], likes: 0, image: cafee },
-  { name: 'Latte', description: 'Espresso with steamed milk and a layer of foam', category: 'coffee', price: 6.50, comments: [], likes: 0, image: cafee },
-  { name: 'Mocha', description: 'Espresso with chocolate and steamed milk', category: 'coffee', price: 6.75, comments: [], likes: 0, image: cafee },
-  { name: 'Black Tea', description: 'Classic black tea', category: 'tea', price: 3.50, comments: [], likes: 0, image: cafee },
-  { name: 'Green Tea', description: 'Fresh green tea', category: 'tea', price: 3.75, comments: [], likes: 0, image: cafee },
-  { name: 'Herbal Tea', description: 'A soothing herbal blend', category: 'tea', price: 4.00, comments: [], likes: 0, image: cafee },
-  { name: 'Cheesecake', description: 'Creamy cheesecake with a graham cracker crust', category: 'dessert', price: 5.50, comments: [], likes: 0, image: cafee },
-  { name: 'Chocolate Cake', description: 'Rich chocolate cake with chocolate frosting', category: 'dessert', price: 6.00, comments: [], likes: 0, image: cafee },
-];
 
 const HoverCard = ({ dataImage, header, content, onAddToCart, onLike, liked, onOpenComments }) => {
   const cardRef = useRef(null);
@@ -139,7 +62,15 @@ const HoverCard = ({ dataImage, header, content, onAddToCart, onLike, liked, onO
   const mousePX = mouseX / width;
   const mousePY = mouseY / height;
   const cardStyle = {
-    ...cardStyles,
+    position: 'relative',
+    flex: '0 0 240px',
+    width: '240px',
+    height: '320px',
+    backgroundColor: '#333',
+    overflow: 'hidden',
+    borderRadius: '10px',
+    boxShadow: 'rgba(0, 0, 0, 0.66) 0 30px 60px 0, inset #333 0 0 0 5px, inset rgba(255, 255, 255, 0.5) 0 0 0 6px',
+    transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1)',
     transform: `rotateY(${mousePX * 30}deg) rotateX(${mousePY * -30}deg)`,
   };
   const cardBgTransform = {
@@ -151,17 +82,17 @@ const HoverCard = ({ dataImage, header, content, onAddToCart, onLike, liked, onO
 
   return (
     <div
-      style={cardWrapStyles}
+      style={{ margin: '10px', transformStyle: 'preserve-3d', cursor: 'pointer' }}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={cardRef}
     >
       <div style={cardStyle}>
-        <div style={{ ...cardBgStyles, ...cardBgTransform, ...cardBgImage }}></div>
-        <div style={cardInfoStyles}>
-          <h1 style={cardInfoH1Styles}>{header}</h1>
-          <p style={cardInfoPStyles}>{content}</p>
+        <div style={{ position: 'absolute', top: '-20px', left: '-20px', width: '100%', height: '100%', padding: '20px', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: 'cover', ...cardBgTransform, ...cardBgImage }}></div>
+        <div style={{ padding: '20px', position: 'absolute', bottom: '0', color: '#fff', transform: 'translateY(40%)', transition: '0.6s cubic-bezier(0.215, 0.61, 0.355, 1)' }}>
+          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: '700', textShadow: 'rgba(0, 0, 0, 0.5) 0 10px 10px' }}>{header}</h1>
+          <p style={{ opacity: '0', textShadow: 'rgba(0, 0, 0, 1) 0 2px 3px', transition: '0.6s cubic-bezier(0.23, 1, 0.32, 1)' }}>{content}</p>
         </div>
         <CardActions style={{ justifyContent: 'center', padding: '10px', transition: 'opacity 0.3s', opacity: mouseX === 0 && mouseY === 0 ? 0 : 1 }}>
           <Button size="small" onClick={onAddToCart}>
@@ -185,126 +116,153 @@ const HoverCard = ({ dataImage, header, content, onAddToCart, onLike, liked, onO
 
 const ClientMenu = () => {
   const navigate = useNavigate();
-  const [category, setCategory] = useState('coffee');
+  const [category, setCategory] = useState('All');
   const [likedItems, setLikedItems] = useState([]);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const { cartItems, addItemToCart } = useCart(); // Use the addItemToCart and cartItems from CartContext
+  const [cartItems, setCartItems] = useState([]);
+
+  const dispatch = useDispatch();
+  const produits = useSelector((state) => state.auth.produits);
+  const categories = useSelector((state) => state.auth.categories);
+
+  useEffect(() => {
+    dispatch(getProduits());
+    dispatch(getCategory());
+  }, [dispatch]);
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
   };
 
   const handleAddItem = (item) => {
-    addItemToCart(item);
-    setShowAlert(true); // Show alert with buttons
-    showToast(item.name + " added to cart!");
+    const newItem = {
+      ...item,
+      quantity: 1,
+      total: parseFloat(item.Prix),
+    };
+    dispatch(addToCart(newItem));
+    setShowAlert(true);
+    showToast(item.nomProduit + " added to cart!");
   };
 
   const handleLikeItem = (item) => {
-    if (likedItems.includes(item)) {
-      setLikedItems(likedItems.filter((likedItem) => likedItem !== item));
-    } else {
-      setLikedItems([...likedItems, item]);
-    }
+    setLikedItems((prevLikedItems) =>
+      prevLikedItems.includes(item.id)
+        ? prevLikedItems.filter((id) => id !== item.id)
+        : [...prevLikedItems, item.id]
+    );
   };
 
-  const openComments = (item) => {
+  const handleOpenComments = (item) => {
     setCurrentItem(item);
     setCommentDialogOpen(true);
   };
 
-  const addComment = () => {
+  const handleCloseComments = () => {
+    setCommentDialogOpen(false);
+    setCurrentItem(null);
+    setNewComment('');
+  };
+
+  const handleSubmitComment = () => {
     if (newComment.trim()) {
-      currentItem.comments.push(newComment);
+      // Handle comment submission logic
+      console.log('Submitting comment:', newComment);
       setNewComment('');
+      setCommentDialogOpen(false);
     }
   };
 
-  const showToast = (message) => {
-    toast(message, {
+  const showToast = (itemName) => {
+    toast.success(`${itemName} added to cart!`, {
       position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 2000,
+      hideProgressBar: true,
       closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
+      pauseOnHover: false,
+      draggable: false,
       progress: undefined,
     });
   };
 
-  const filteredItems = coffeeTypes.filter(item => item.category === category);
+  const filteredProduits = category === 'All'
+    ? produits
+    : produits.filter((produit) => produit.idCategorie === category);
 
   return (
-    <Container maxWidth="md">
-      <ToastContainer />
-      <Typography variant="h4" align="center" gutterBottom>
-        Menu Café
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        Our Menu
       </Typography>
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-start' }}>
-        <FormControl>
-          <InputLabel id="category-select-label">Category</InputLabel>
-          <Select
-            labelId="category-select-label"
-            id="category-select"
-            value={category}
-            label="Category"
-            onChange={handleCategoryChange}
-          >
-            <MenuItem value="coffee">Coffee</MenuItem>
-            <MenuItem value="tea">Tea</MenuItem>
-            <MenuItem value="dessert">Dessert</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-      <Grid container spacing={2}>
-        {filteredItems.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="category-select-label">Category</InputLabel>
+        <Select
+          labelId="category-select-label"
+          value={category}
+          onChange={handleCategoryChange}
+          label="Category"
+        >
+          <MenuItem value="All">All</MenuItem>
+          {categories.map((cat) => (
+            <MenuItem key={cat.id} value={cat.id}>
+              {cat.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <Grid container spacing={4}>
+        {filteredProduits.map((produit) => (
+          <Grid item key={produit.id} xs={12} sm={6} md={4}>
             <HoverCard
-              dataImage={item.image}
-              header={item.name}
-              content={item.description}
-              onAddToCart={() => handleAddItem(item)}
-              onLike={() => handleLikeItem(item)}
-              liked={likedItems.includes(item)}
-              onOpenComments={() => openComments(item)}
+              dataImage={photo}
+              header={produit.nomProduit}
+              content={`Price: $${produit.Prix}`}
+              onAddToCart={() => handleAddItem(produit)}
+              onLike={() => handleLikeItem(produit)}
+              liked={likedItems.includes(produit.id)}
+              onOpenComments={() => handleOpenComments(produit)}
             />
           </Grid>
         ))}
       </Grid>
-      <Dialog open={commentDialogOpen} onClose={() => setCommentDialogOpen(false)}>
-        <DialogTitle>Comments</DialogTitle>
+
+      {showAlert && (
+        <StyledAlert severity="success" onClose={() => setShowAlert(false)}>
+          Item added to cart!
+          <Link to="/client/card" style={{ marginLeft: '5px', color: '#000' }}>View my cart</Link>
+        </StyledAlert>
+      )}
+      <ToastContainer />
+
+      <Dialog open={commentDialogOpen} onClose={handleCloseComments}>
+        <DialogTitle>Comments for {currentItem && currentItem.nomProduit}</DialogTitle>
         <DialogContent>
-          {currentItem && currentItem.comments && currentItem.comments.map((comment, index) => (
-            <Typography key={index}>{comment}</Typography>
-          ))}
           <TextField
             autoFocus
             margin="dense"
-            id="new-comment"
-            label="Add a comment"
+            label="Your Comment"
+            type="text"
             fullWidth
-            variant="standard"
+            multiline
+            rows={4}
+            variant="outlined"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
         </DialogContent>
+
         <DialogActions>
-          <Button onClick={() => setCommentDialogOpen(false)}>Cancel</Button>
-          <Button onClick={addComment}>Add Comment</Button>
+          <Button onClick={handleCloseComments} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmitComment} color="primary">
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
-      {showAlert && (
-        <StyledAlert severity="success">
-          Item added to cart!
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-            <Button color="inherit" size="small" onClick={() => navigate('/client/card')}>View My Cart</Button>
-            <Button color="inherit" size="small" onClick={() => setShowAlert(false)}>Continue Shopping</Button>
-          </Box>
-        </StyledAlert>
-      )}
     </Container>
   );
 };
